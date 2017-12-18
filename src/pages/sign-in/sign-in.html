@@ -1,0 +1,49 @@
+<ion-header no-border>
+  <!--
+  <ion-navbar transparent>
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+  </ion-navbar>
+  -->
+</ion-header>
+
+<ion-content no-bounce ion-fixed padding="false">
+  <ion-row class="app-icon-container">
+    <ion-col text-center>
+      <ion-img style="width: 180px; height: 48px; margin-top: 100px;" src="../../assets/imgs/logo.png"></ion-img>
+    </ion-col>
+  </ion-row>
+
+  <form [formGroup]="credentialsForm">
+    <ion-item>
+      <ion-label floating>
+        User Name
+      </ion-label>
+      <ion-input [formControl]="credentialsForm.controls['user']" type="text">
+      </ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label floating>
+        Password
+      </ion-label>
+      <ion-input [formControl]="credentialsForm.controls['password']" type="password"></ion-input>
+    </ion-item>
+
+    <div *ngIf="credentialsForm.controls['password'].hasError('pattern') &&
+        (credentialsForm.controls['password'].dirty || submitted)"
+        class="validator-error">
+      Passwords should be at least 8 characters long and contain one number, one character and one special character.
+    </div>
+
+    <ion-row class="sign-in-button-container">
+      <ion-col text-center center>
+        <button ion-button block style="background-color:rgb(38,38,38);"
+                [disabled]="!credentialsForm.valid" (click)="onSignIn()">
+          Sign in
+        </button>
+      </ion-col>
+    </ion-row>
+  </form>
+</ion-content>
