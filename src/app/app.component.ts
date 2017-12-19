@@ -13,6 +13,7 @@ import { AppPreferences } from '@ionic-native/app-preferences';
 
 export class MyApp {
   rootPage:any = SignInPage;
+  user:String
 
   constructor(
     platform: Platform,
@@ -25,17 +26,14 @@ export class MyApp {
       splashScreen.hide();
       // check if user is already logged-in
       // if logged in set home as root
-      var user = '' ;
       preferences.fetch('username').then((res) => {
-        console.log(res);
-        user = res;
+        this.user = res;
+        if (this.user != null && this.user != '') {
+          this.rootPage = HomePage;
+        }else{
+          this.rootPage = SignInPage;
+        }
       });
-
-      if (user != '') {
-        this.rootPage = HomePage;
-      }else{
-        this.rootPage = SignInPage;
-      }
     });
   }
 }

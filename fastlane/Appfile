@@ -1,0 +1,4 @@
+app_identifier "com.xyz.yourname" # The bundle identifier of your app
+apple_id "your.name@gmail.com" # Your Apple ID Email address
+team_id "12345678"  # Developer Portal Team ID
+itc_team_id "12345678" # Your iTunes Connect Team ID

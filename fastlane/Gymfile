@@ -1,0 +1,4 @@
+scheme "YourName" # Scheme of your native app, just the Name from config.xml
+project "../platforms/ios/YourName.xcodeproj" # Should be the path to the iOS project
+output_directory "./build" # Where the app will be build to
+output_name "MyApp" # Final output for the IPA
