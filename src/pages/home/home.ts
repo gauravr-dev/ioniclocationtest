@@ -13,6 +13,7 @@ export class HomePage {
   options : GeolocationOptions;
   currentPos : Geoposition;
   user:String;
+  password:String;
 
   constructor(
     public navCtrl: NavController,
@@ -29,22 +30,22 @@ export class HomePage {
   ionViewDidEnter(){
     this.getUserPosition();
     this.preferences.fetch('username').then((res) => {
-      console.log(res);
       this.user = res;
+    });
+    this.preferences.fetch('password').then((res) => {
+      this.password = res;
     });
   }
 
   onSendLocation(){
     if(this.currentPos){
-      var user = '' ;
-      var password = '' ;
-      this.preferences.fetch('username').then((res) => { user = res; });
-      this.preferences.fetch('password').then((res) => { password = res; });
-
-      this.restProvider.sendLocation(user, password, this.currentPos.coords.latitude, this.currentPos.coords.longitude)
+      this.restProvider.sendLocation(this.user, this.password, this.currentPos.coords.latitude, this.currentPos.coords.longitude)
       .then(res => {
-        console.log(res);
-        this.presentAlert('Success', 'You location has been sent successfully.');
+        if(res['result'] == false){
+          this.presentAlert('Error', 'There is some error in request.');
+        }else{
+          this.presentAlert('Success', 'You location has been sent successfully.');
+        }
       },
       err => {
         this.presentAlert('Error', err.message);

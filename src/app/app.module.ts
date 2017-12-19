@@ -1,3 +1,4 @@
+import { SignInPageModule } from './../pages/sign-in/sign-in.module';
 import { RestProvider } from './../providers/rest/rest';
 import { BrowserModule } from '@angular/platform-browser';
 import { ErrorHandler, NgModule } from '@angular/core';
@@ -15,13 +16,13 @@ import { AppPreferences } from '@ionic-native/app-preferences';
 @NgModule({
   declarations: [
     MyApp,
-    HomePage,
-    SignInPage
+    HomePage
   ],
   imports: [
     BrowserModule,
     IonicModule.forRoot(MyApp),
-    HttpClientModule
+    HttpClientModule,
+    SignInPageModule
   ],
   bootstrap: [IonicApp],
   entryComponents: [
