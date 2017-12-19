@@ -14,6 +14,7 @@ export class HomePage {
   currentPos : Geoposition;
   user:String;
   password:String;
+  serverurl:String;
 
   constructor(
     public navCtrl: NavController,
@@ -35,11 +36,14 @@ export class HomePage {
     this.preferences.fetch('password').then((res) => {
       this.password = res;
     });
+    this.preferences.fetch('serverurl').then((res) => {
+      this.serverurl = res;
+    });
   }
 
   onSendLocation(){
     if(this.currentPos){
-      this.restProvider.sendLocation(this.user, this.password, this.currentPos.coords.latitude, this.currentPos.coords.longitude)
+      this.restProvider.sendLocation(this.serverurl,this.user, this.password, this.currentPos.coords.latitude, this.currentPos.coords.longitude)
       .then(res => {
         if(res['result'] == false){
           this.presentAlert('Error', 'There is some error in request.');
@@ -88,10 +92,7 @@ export class HomePage {
   updateLocation(){
     let watch = this.geolocation.watchPosition();
     watch.subscribe((pos) => {
-    // data can be a set of coordinates, or an error (if an error occurred).
-    // data.coords.latitude
-    // data.coords.longitude
-    this.currentPos = pos;
+      this.currentPos = pos;
     });
   }
 }

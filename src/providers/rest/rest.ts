@@ -13,9 +13,6 @@ import 'rxjs/add/operator/toPromise';
 */
 @Injectable()
 export class RestProvider {
-  private apiUrl = 'http://47.74.157.145:8069';
-  private loginApiUrl = this.apiUrl + '/CheckLogin';
-
   constructor(public http: HttpClient) {
     console.log('Hello RestProvider Provider');
   }
@@ -33,15 +30,16 @@ export class RestProvider {
  * @param {any} password
  * @memberof RestProvider
  */
-checklogin(user, password) {
+checklogin(serverurl, user, password) {
     var data = JSON.stringify({'params':{'login': user, 'password':password}});
     var headers = new HttpHeaders().set('content-type','application/json')
     .set('accept', 'text/plain');
 
     var options = { headers:headers, json: true };
+    var loginurl = serverurl + '/CheckLogin' ;
 
     let promise = new Promise((resolve, reject) => {
-      this.http.post(this.loginApiUrl, data, options).subscribe(
+      this.http.post(loginurl, data, options).subscribe(
         res => {
           resolve(res);
         },
@@ -53,16 +51,17 @@ checklogin(user, password) {
     return promise;
   }
 
-  sendLocation(user, password, latitude, longitude) {
+  sendLocation(serverurl, user, password, latitude, longitude) {
     var data = JSON.stringify({'params':{'login': user, 'password':password, 'latitude':latitude, 'longitude':longitude}});
     console.log(data) ;
     var headers = new HttpHeaders().set('content-type','application/json')
     .set('accept', 'text/plain');
 
     var options = { headers:headers, json: true };
+    var locationUpdateUrl = serverurl + '/SendLocation' ;
 
     let promise = new Promise((resolve, reject) => {
-      this.http.post(this.loginApiUrl, data, options).subscribe(
+      this.http.post(locationUpdateUrl, data, options).subscribe(
         res => {
           resolve(res);
         },

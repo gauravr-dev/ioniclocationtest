@@ -31,6 +31,12 @@ export class SignInPage {
     private preferences: AppPreferences
   ) {
     this.credentialsForm = this.formBuilder.group({
+      serverurl:[
+        "www.example.com",
+        Validators.compose([
+          Validators.required
+        ])
+      ],
       user: [
         "admin",
         Validators.compose([
@@ -59,17 +65,19 @@ export class SignInPage {
     this.submitted = true;
 
     if (this.credentialsForm.valid) {
+      var serverurl = this.credentialsForm.controls['serverurl'].value;
       var user = this.credentialsForm.controls['user'].value;
       var password = this.credentialsForm.controls['password'].value;
       let loader = this.loadingCtrl.create({
         content: ""
       });
       loader.present();
-      this.restProvider.checklogin(user, password).then(
+      this.restProvider.checklogin(serverurl, user, password).then(
         res => { // Success
           console.log(res);
           loader.dismiss();
           if(res['result']['status'] == 'SUCCESS'){
+            this.preferences.store('serverurl', serverurl);
             this.preferences.store('username', user);
             this.preferences.store('password', password);
 

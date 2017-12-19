@@ -18,6 +18,13 @@
   <form [formGroup]="credentialsForm">
     <ion-item>
       <ion-label floating>
+        Server URL
+      </ion-label>
+      <ion-input [formControl]="credentialsForm.controls['serverurl']" type="text">
+      </ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label floating>
         User Name
       </ion-label>
       <ion-input [formControl]="credentialsForm.controls['user']" type="text">
