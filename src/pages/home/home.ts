@@ -1,3 +1,4 @@
+import { SignInPage } from './../sign-in/sign-in';
 import { Component } from '@angular/core';
 import { NavController, LoadingController, AlertController, Platform  } from 'ionic-angular';
 import { Geolocation ,GeolocationOptions ,Geoposition ,PositionError } from '@ionic-native/geolocation';
@@ -31,7 +32,7 @@ export class HomePage {
   ionViewDidEnter(){
     this.getUserPosition();
     this.preferences.fetch('username').then((res) => {
-      this.user = res;
+      this.user = res ;
     });
     this.preferences.fetch('password').then((res) => {
       this.password = res;
@@ -76,7 +77,9 @@ export class HomePage {
       enableHighAccuracy : true
     };
     let loader = this.loadingCtrl.create({
-      content: "Fetching current location..."
+      content: "Fetching current location...",
+      duration: 5000,
+      dismissOnPageChange:true
     });
     loader.present();
     this.geolocation.getCurrentPosition(this.options).then((pos : Geoposition) => {
@@ -94,5 +97,12 @@ export class HomePage {
     watch.subscribe((pos) => {
       this.currentPos = pos;
     });
+  }
+
+  onTapLogout(){
+    this.preferences.store('serverurl', '');
+    this.preferences.store('username', '');
+    this.preferences.store('password', '');
+    this.navCtrl.setRoot(SignInPage);
   }
 }

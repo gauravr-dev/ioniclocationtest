@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
-import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/toPromise';
@@ -17,12 +16,6 @@ export class RestProvider {
     console.log('Hello RestProvider Provider');
   }
 
-  oldchecklogin(user, password): Observable<string[]> {
-    var data = JSON.stringify({'params':{'login': user, 'password':password}});
-    return this.http.post(this.loginApiUrl, data)
-              .map(this.extractData)
-              .catch(this.handleError);
-  }
 /**
  *
  *
@@ -52,13 +45,22 @@ checklogin(serverurl, user, password) {
   }
 
   sendLocation(serverurl, user, password, latitude, longitude) {
-    var data = JSON.stringify({'params':{'login': user, 'password':password, 'latitude':latitude, 'longitude':longitude}});
-    console.log(data) ;
+
+    var date= new Date();
+    var dateString = date.getUTCFullYear() + '-'
+    + (date.getUTCMonth() + 1)+ '-'
+    + date.getUTCDate() + ' '
+    + date.getUTCHours() + ':'
+    + date.getUTCMinutes() + ':'
+    + date.getUTCSeconds() ;
+
+    var data = JSON.stringify({'params':{'login': user, 'password':password, 'lat':latitude, 'long':longitude, 'date_info': dateString}});
+
     var headers = new HttpHeaders().set('content-type','application/json')
     .set('accept', 'text/plain');
 
     var options = { headers:headers, json: true };
-    var locationUpdateUrl = serverurl + '/SendLocation' ;
+    var locationUpdateUrl = serverurl + '/SaveLocation' ;
 
     let promise = new Promise((resolve, reject) => {
       this.http.post(locationUpdateUrl, data, options).subscribe(
@@ -75,7 +77,7 @@ checklogin(serverurl, user, password) {
 
 
 
-  private extractData(res: Response) {
+  /**private extractData(res: Response) {
     let body = res;
     return body || { };
   }
@@ -90,5 +92,5 @@ checklogin(serverurl, user, password) {
     }
     console.error(errMsg);
     return Observable.throw(errMsg);
-  }
+  }*/
 }

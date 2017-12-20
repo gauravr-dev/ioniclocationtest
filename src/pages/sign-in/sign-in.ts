@@ -32,7 +32,7 @@ export class SignInPage {
   ) {
     this.credentialsForm = this.formBuilder.group({
       serverurl:[
-        "www.example.com",
+        "http://47.74.157.145:8069",
         Validators.compose([
           Validators.required
         ])
@@ -69,7 +69,9 @@ export class SignInPage {
       var user = this.credentialsForm.controls['user'].value;
       var password = this.credentialsForm.controls['password'].value;
       let loader = this.loadingCtrl.create({
-        content: ""
+        content: "",
+        duration: 5000,
+        dismissOnPageChange:true
       });
       loader.present();
       this.restProvider.checklogin(serverurl, user, password).then(
@@ -80,8 +82,8 @@ export class SignInPage {
             this.preferences.store('serverurl', serverurl);
             this.preferences.store('username', user);
             this.preferences.store('password', password);
-
-            this.navCtrl.push(HomePage);
+            // this.navCtrl.push(HomePage);
+            this.navCtrl.setRoot(HomePage)
           }else{
             // show alert if status is failed.
             this.presentAlert('Error', 'Your User Name or Password is wrong. Please try again.');
@@ -89,7 +91,6 @@ export class SignInPage {
         },
         err => {
           loader.dismiss();
-          console.log(err);
           // show alert if error occurred.
           this.presentAlert('Error', err.message);
         }
