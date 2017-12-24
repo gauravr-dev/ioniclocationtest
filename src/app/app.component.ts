@@ -1,3 +1,4 @@
+import { CreateMeetingPage } from './../pages/create-meeting/create-meeting';
 import { HomePage } from './../pages/home/home';
 import { SignInPage } from './../pages/sign-in/sign-in';
 import { Component } from '@angular/core';
@@ -12,7 +13,7 @@ import { AppPreferences } from '@ionic-native/app-preferences';
 
 
 export class MyApp {
-  rootPage:any = SignInPage;
+  rootPage:any = CreateMeetingPage;
   user:String
 
   constructor(
@@ -26,14 +27,14 @@ export class MyApp {
       splashScreen.hide();
       // check if user is already logged-in
       // if logged in set home as root
-      preferences.fetch('username').then((res) => {
+      /*preferences.fetch('username').then((res) => {
         this.user = res;
         if (this.user != null && this.user != '') {
           this.rootPage = HomePage;
         }else{
           this.rootPage = SignInPage;
         }
-      });
+      });*/
     });
   }
 }
