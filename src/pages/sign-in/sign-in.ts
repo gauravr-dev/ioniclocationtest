@@ -32,7 +32,7 @@ export class SignInPage {
   ) {
     this.credentialsForm = this.formBuilder.group({
       serverurl:[
-        "http://47.74.157.145:8069",
+        "http://191.101.239.214:8079",
         Validators.compose([
           Validators.required
         ])
@@ -76,7 +76,6 @@ export class SignInPage {
       loader.present();
       this.restProvider.checklogin(serverurl, user, password).then(
         res => { // Success
-          console.log(res);
           loader.dismiss();
           if(res['result']['status'] == 'SUCCESS'){
             this.preferences.store('serverurl', serverurl);

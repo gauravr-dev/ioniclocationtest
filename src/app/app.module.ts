@@ -1,3 +1,7 @@
+import { ShowMeetingPageModule } from './../pages/show-meeting/show-meeting.module';
+import { ShowMeetingPage } from './../pages/show-meeting/show-meeting';
+import { CreateMeetingModule } from './../pages/create-meeting/create-meeting.module';
+import { CreateMeeting } from './../pages/create-meeting/create-meeting';
 import { SignInPageModule } from './../pages/sign-in/sign-in.module';
 import { RestProvider } from './../providers/rest/rest';
 import { BrowserModule } from '@angular/platform-browser';
@@ -22,13 +26,17 @@ import { AppPreferences } from '@ionic-native/app-preferences';
     BrowserModule,
     IonicModule.forRoot(MyApp),
     HttpClientModule,
-    SignInPageModule
+    SignInPageModule,
+    CreateMeetingModule,
+    ShowMeetingPageModule
   ],
   bootstrap: [IonicApp],
   entryComponents: [
     MyApp,
     SignInPage,
-    HomePage
+    HomePage,
+    CreateMeeting,
+    ShowMeetingPage
   ],
   providers: [
     StatusBar,

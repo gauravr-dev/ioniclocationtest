@@ -1,3 +1,4 @@
+import { CreateMeeting } from './../create-meeting/create-meeting';
 import { SignInPage } from './../sign-in/sign-in';
 import { Component } from '@angular/core';
 import { NavController, LoadingController, AlertController, Platform  } from 'ionic-angular';
@@ -62,6 +63,10 @@ export class HomePage {
     this.getUserPosition();
   }
 
+  onCreateMeeting(){
+
+    this.navCtrl.push(CreateMeeting);
+  }
   presentAlert(title, message) {
     let alert = this.alertCtrl.create({
       title: title,
@@ -97,6 +102,8 @@ export class HomePage {
     watch.subscribe((pos) => {
       this.currentPos = pos;
     });
+
+
   }
 
   onTapLogout(){
