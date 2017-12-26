@@ -16,6 +16,7 @@ import { SignInPage } from '../pages/sign-in/sign-in';
 import { HttpClientModule } from '@angular/common/http';
 import { Geolocation } from '@ionic-native/geolocation';
 import { AppPreferences } from '@ionic-native/app-preferences';
+import { GoogleMaps } from '@ionic-native/google-maps';
 
 @NgModule({
   declarations: [
@@ -44,7 +45,8 @@ import { AppPreferences } from '@ionic-native/app-preferences';
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     RestProvider,
     Geolocation,
-    AppPreferences
+    AppPreferences,
+    GoogleMaps
   ]
 })
 export class AppModule {}

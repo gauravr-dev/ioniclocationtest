@@ -5,7 +5,6 @@ import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { RestProvider } from '../../providers/rest/rest';
 import {AppPreferences} from '@ionic-native/app-preferences' ;
 
-
 @IonicPage()
 @Component({
   selector: "page-sign-in",

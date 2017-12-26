@@ -93,4 +93,11 @@
     <plugin name="ionic-plugin-keyboard" spec="^2.2.1" />
     <plugin name="cordova-plugin-app-preferences" spec="^0.99.3" />
     <allow-navigation href="http://192.168.43.27:8103" />
+    <plugin name="cordova-plugin-googlemaps" spec="^2.1.1">
+        <variable name="API_KEY_FOR_ANDROID" value="AIzaSyBIzyHLRp90oilyzZg62X8DpVSoccsZaQ0" />
+        <variable name="API_KEY_FOR_IOS" value="AIzaSyBIzyHLRp90oilyzZg62X8DpVSoccsZaQ0" />
+        <variable name="LOCATION_WHEN_IN_USE_DESCRIPTION" value="Show your location on the map" />
+        <variable name="LOCATION_ALWAYS_USAGE_DESCRIPTION" value="Trace your location on the map" />
+    </plugin>
+    <allow-navigation href="http://192.168.100.41:8100" />
 </widget>

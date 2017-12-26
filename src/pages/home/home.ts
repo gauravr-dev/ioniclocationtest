@@ -1,10 +1,22 @@
 import { CreateMeeting } from './../create-meeting/create-meeting';
 import { SignInPage } from './../sign-in/sign-in';
-import { Component } from '@angular/core';
+import { Component, ViewChild, ElementRef } from '@angular/core';
 import { NavController, LoadingController, AlertController, Platform  } from 'ionic-angular';
 import { Geolocation ,GeolocationOptions ,Geoposition ,PositionError } from '@ionic-native/geolocation';
 import { RestProvider } from '../../providers/rest/rest';
 import { AppPreferences } from '@ionic-native/app-preferences' ;
+
+import {
+  GoogleMaps,
+  GoogleMap,
+  GoogleMapsEvent,
+  GoogleMapOptions,
+  CameraPosition,
+  MarkerOptions,
+  Marker
+ } from '@ionic-native/google-maps';
+
+declare var google;
 
 @Component({
   selector: 'page-home',
@@ -18,6 +30,10 @@ export class HomePage {
   password:String;
   serverurl:String;
 
+  @ViewChild('map') mapElement: ElementRef;
+  map: any;
+  // map: GoogleMap;
+
   constructor(
     public navCtrl: NavController,
     private geolocation : Geolocation,
@@ -25,9 +41,14 @@ export class HomePage {
     public loadingCtrl: LoadingController,
     private alertCtrl: AlertController,
     private platform: Platform,
-    private preferences: AppPreferences
+    private preferences: AppPreferences,
+    private googleMaps: GoogleMaps
   ) {
 
+  }
+
+  ionViewDidLoad() {
+    this.loadMap();
   }
 
   ionViewDidEnter(){
@@ -67,6 +88,68 @@ export class HomePage {
 
     this.navCtrl.push(CreateMeeting);
   }
+
+  loadMap(){
+    this.geolocation.getCurrentPosition().then((position) => {
+      let latLng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+      let mapOptions = {
+        center: latLng,
+        zoom: 15,
+        mapTypeId: google.maps.MapTypeId.ROADMAP
+      }
+      this.map = new google.maps.Map(this.mapElement.nativeElement, mapOptions);
+    }, (err) => {
+      console.log(err);
+    });
+  }
+
+  loadMapold() {
+
+    let mapOptions: GoogleMapOptions = {
+      camera: {
+        target: {
+          lat: 43.0741904,
+          lng: -89.3809802
+        },
+        zoom: 18,
+        tilt: 30
+      }
+    };
+
+    let latLng = new google.maps.LatLng(-34.9290, 138.6010);
+
+    /*let mapOptions = {
+      center: latLng,
+      zoom: 15,
+      mapTypeId: google.maps.MapTypeId.ROADMAP
+    }*/
+
+    this.map = new google.maps.Map(this.mapElement.nativeElement, mapOptions);
+    // this.map = this.googleMaps.create('map_canvas', mapOptions);
+    // Wait the MAP_READY before using any methods.
+    /*this.map.one(GoogleMapsEvent.MAP_READY)
+      .then(() => {
+        console.log('Map is ready!');
+        // Now you can use all methods safely.
+        this.map.addMarker({
+            title: 'Ionic',
+            icon: 'blue',
+            animation: 'DROP',
+            position: {
+              lat: 43.0741904,
+              lng: -89.3809802
+            }
+          })
+          .then(marker => {
+            marker.on(GoogleMapsEvent.MARKER_CLICK)
+              .subscribe(() => {
+                alert('clicked');
+              });
+          });
+
+      });*/
+  }
+
   presentAlert(title, message) {
     let alert = this.alertCtrl.create({
       title: title,
