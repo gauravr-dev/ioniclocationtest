@@ -15,6 +15,7 @@ import {
   MarkerOptions,
   Marker
  } from '@ionic-native/google-maps';
+import { isUndefined } from 'ionic-angular/util/util';
 
 declare var google;
 
@@ -29,6 +30,7 @@ export class HomePage {
   user:String;
   password:String;
   serverurl:String;
+  locationMarker: Marker ;
 
   @ViewChild('map') mapElement: ElementRef;
   map: any;
@@ -44,15 +46,9 @@ export class HomePage {
     private preferences: AppPreferences,
     private googleMaps: GoogleMaps
   ) {
-
-  }
-
-  ionViewDidLoad() {
-    this.loadMap();
   }
 
   ionViewDidEnter(){
-    this.getUserPosition();
     this.preferences.fetch('username').then((res) => {
       this.user = res ;
     });
@@ -62,6 +58,8 @@ export class HomePage {
     this.preferences.fetch('serverurl').then((res) => {
       this.serverurl = res;
     });
+    this.getUserPosition();
+    this.loadMap();
   }
 
   onSendLocation(){
@@ -89,72 +87,37 @@ export class HomePage {
     this.navCtrl.push(CreateMeeting);
   }
 
-  loadMap(){
-    this.geolocation.getCurrentPosition().then((position) => {
-      let latLng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
-      let mapOptions = {
-        center: latLng,
-        zoom: 15,
-        mapTypeId: google.maps.MapTypeId.ROADMAP
-      }
-      this.map = new google.maps.Map(this.mapElement.nativeElement, mapOptions);
-      let current_position = {
-        lat: position.coords.latitude,
-        lng: position.coords.longitude
-      };
-      let marker = new google.maps.Marker({
-        position: current_position,
-        label: "Your location",
-        map: this.map
-      });
-    });
-  }
+  async loadMap(){
+    await this.platform.ready();
+    var lat = 37.4220 ;
+    var lng = -122.0840 ;
 
-  loadMapold() {
+    // static api key - AIzaSyCwCYaAzkiqQUJBtydjWJYsT2zSHtB2xXY
 
-    let mapOptions: GoogleMapOptions = {
-      camera: {
-        target: {
-          lat: 43.0741904,
-          lng: -89.3809802
-        },
-        zoom: 18,
-        tilt: 30
-      }
-    };
+    if(!isUndefined(this.currentPos) && !isUndefined(this.currentPos.coords)) {
+      lat = this.currentPos.coords.latitude ;
+      lng = this.currentPos.coords.longitude ;
+    }
 
-    let latLng = new google.maps.LatLng(-34.9290, 138.6010);
-
-    /*let mapOptions = {
+    let latLng = new google.maps.LatLng(lat, lng);
+    let mapOptions = {
       center: latLng,
       zoom: 15,
-      mapTypeId: google.maps.MapTypeId.ROADMAP
-    }*/
-
+      mapTypeId: google.maps.MapTypeId.ROADMAP,
+      draggable: !("ontouchend" in document)
+    }
     this.map = new google.maps.Map(this.mapElement.nativeElement, mapOptions);
-    // this.map = this.googleMaps.create('map_canvas', mapOptions);
-    // Wait the MAP_READY before using any methods.
-    /*this.map.one(GoogleMapsEvent.MAP_READY)
-      .then(() => {
-        console.log('Map is ready!');
-        // Now you can use all methods safely.
-        this.map.addMarker({
-            title: 'Ionic',
-            icon: 'blue',
-            animation: 'DROP',
-            position: {
-              lat: 43.0741904,
-              lng: -89.3809802
-            }
-          })
-          .then(marker => {
-            marker.on(GoogleMapsEvent.MARKER_CLICK)
-              .subscribe(() => {
-                alert('clicked');
-              });
-          });
 
-      });*/
+    let current_position = {
+      lat: lat,
+      lng: lng
+    };
+
+    this.locationMarker = new google.maps.Marker({
+      position: current_position,
+      label: "Your location",
+      map: this.map
+    });
   }
 
   presentAlert(title, message) {
@@ -169,7 +132,9 @@ export class HomePage {
   async getUserPosition(){
     await this.platform.ready();
     this.options = {
-      enableHighAccuracy : true
+      enableHighAccuracy : true,
+      timeout: 5000,
+      maximumAge: 0
     };
     let loader = this.loadingCtrl.create({
       content: "Fetching current location...",
@@ -184,16 +149,29 @@ export class HomePage {
     },(err : PositionError)=>{
         loader.dismiss();
         this.presentAlert('Error', 'There is some error in getting your location.');
+        this.updateLocation();
     })
   }
 
+  /**
+   *
+   */
   updateLocation(){
     let watch = this.geolocation.watchPosition();
     watch.subscribe((pos) => {
-      this.currentPos = pos;
+      if(!isUndefined(pos) && !isUndefined(pos.coords)) {
+        this.currentPos = pos;
+        let current_position = {
+          lat: this.currentPos.coords.latitude,
+          lng: this.currentPos.coords.longitude
+        };
+        this.locationMarker = new google.maps.Marker({
+          position: current_position,
+          label: "Your location",
+          map: this.map
+        });
+      }
     });
-
-
   }
 
   onTapLogout(){

@@ -11,32 +11,25 @@
     </ion-col>
   </ion-row>
 
-  <!--ion-item style="margin-top: 30px;" no-lines>
-      <h2 *ngIf="this.user">Welcome, {{this.user}}</h2>
-      <h3>Your current location is:</h3>
-      <h4>Latitude: </h4>
-      <p *ngIf="this.currentPos">{{this.currentPos.coords.latitude}}</p>
-      <h4>Longitude: </h4>
-      <p *ngIf="this.currentPos">{{this.currentPos.coords.longitude}}</p>
-  </ion-item-->
-
   <ion-item center>
     <div #map id="map" style="width: 100%; height: 300px;"></div>
   </ion-item>
-  <ion-item style="margin-top: 50px;" no-lines>
-    <button ion-button block style="height: 45px;background-color:rgb(38,38,38);"(click)="onSendLocation()">
-      Send Location
-    </button>
-
-    <button ion-button block style="height: 45px; background-color:rgb(82,128,201);"(click)="onCreateMeeting()">
+  <ion-row no-lines>
+    <ion-col>
+      <button ion-button block style="height: 45px;background-color:rgb(38,38,38);"(click)="onSendLocation()">
+        Send Location
+      </button>
+    </ion-col>
+    <ion-col>
+      <button ion-button block style="height: 45px; background-color:rgb(82,128,201);"(click)="onCreateMeeting()">
       Create Meeting
-    </button>
+      </button>
+    </ion-col>
+  </ion-row>
+  <ion-item no-lines>
+    <button ion-button block style="background-color:firebrick;" (click)="onTapLogout()" >Logout</button>
   </ion-item>
-
-</ion-content>
-<ion-footer style="padding: 10px;" no-lines>
-  <button ion-button block style="background-color:firebrick;" (click)="onTapLogout()" >Logout</button>
   <ion-item text-center>Powered by GEOTECHNOSOFT
     <!-- Powered by <ion-img src="assets/imgs/sitelogo.png"></ion-img> -->
   </ion-item>
-</ion-footer>
+</ion-content>
