@@ -133,8 +133,8 @@ export class HomePage {
     await this.platform.ready();
     this.options = {
       enableHighAccuracy : true,
-      timeout: 5000,
-      maximumAge: 0
+      timeout: 50000,
+      maximumAge: 10000
     };
     let loader = this.loadingCtrl.create({
       content: "Fetching current location...",
@@ -142,13 +142,14 @@ export class HomePage {
       dismissOnPageChange:true
     });
     loader.present();
-    this.geolocation.getCurrentPosition(this.options).then((pos : Geoposition) => {
+
+    this.geolocation.getCurrentPosition().then((pos : Geoposition) => {
         this.currentPos = pos;
         loader.dismiss();
         this.updateLocation();
     },(err : PositionError)=>{
         loader.dismiss();
-        this.presentAlert('Error', 'There is some error in getting your location.');
+        this.presentAlert('Error', err.message);
         this.updateLocation();
     })
   }

@@ -16,19 +16,21 @@
   </ion-item>
   <ion-row no-lines>
     <ion-col>
-      <button ion-button block style="height: 45px;background-color:rgb(38,38,38);"(click)="onSendLocation()">
+      <button ion-button block style="height: 40px;background-color:rgb(38,38,38);"(click)="onSendLocation()">
         Send Location
       </button>
     </ion-col>
     <ion-col>
-      <button ion-button block style="height: 45px; background-color:rgb(82,128,201);"(click)="onCreateMeeting()">
+      <button ion-button block style="height: 40px; background-color:rgb(82,128,201);"(click)="onCreateMeeting()">
       Create Meeting
       </button>
     </ion-col>
   </ion-row>
-  <ion-item no-lines>
-    <button ion-button block style="background-color:firebrick;" (click)="onTapLogout()" >Logout</button>
-  </ion-item>
+  <ion-row no-lines>
+    <ion-col>
+      <button ion-button block style="height: 40px;background-color:firebrick;" (click)="onTapLogout()" >Logout</button>
+    </ion-col>
+  </ion-row>
   <ion-item text-center>Powered by GEOTECHNOSOFT
     <!-- Powered by <ion-img src="assets/imgs/sitelogo.png"></ion-img> -->
   </ion-item>
