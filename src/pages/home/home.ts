@@ -48,6 +48,9 @@ export class HomePage {
   ) {
   }
 
+  ionViewDidLoad(){
+    this.loadMap();
+  }
   ionViewDidEnter(){
     this.preferences.fetch('username').then((res) => {
       this.user = res ;
@@ -59,7 +62,6 @@ export class HomePage {
       this.serverurl = res;
     });
     this.getUserPosition();
-    this.loadMap();
   }
 
   onSendLocation(){
@@ -83,12 +85,10 @@ export class HomePage {
   }
 
   onCreateMeeting(){
-
     this.navCtrl.push(CreateMeeting);
   }
 
-  async loadMap(){
-    await this.platform.ready();
+  loadMap(){
     var lat = 37.4220 ;
     var lng = -122.0840 ;
 
@@ -112,12 +112,16 @@ export class HomePage {
       lat: lat,
       lng: lng
     };
-
-    this.locationMarker = new google.maps.Marker({
-      position: current_position,
-      label: "Your location",
-      map: this.map
-    });
+    if(this.locationMarker){
+      this.locationMarker.setPosition(current_position);
+    }else{
+      this.locationMarker = new google.maps.Marker({
+        position: current_position,
+        label: "Your location",
+        map: this.map
+      });
+    }
+    
   }
 
   presentAlert(title, message) {
@@ -146,6 +150,22 @@ export class HomePage {
     this.geolocation.getCurrentPosition().then((pos : Geoposition) => {
         this.currentPos = pos;
         loader.dismiss();
+
+        this.currentPos = pos;
+        let current_position = {
+          lat: this.currentPos.coords.latitude,
+          lng: this.currentPos.coords.longitude
+        };
+        if(this.locationMarker){
+          this.locationMarker.setPosition(current_position);
+        }else{
+          this.locationMarker = new google.maps.Marker({
+            position: current_position,
+            label: "Your location",
+            map: this.map
+          });
+        }
+        this.map.setCenter(new google.maps.LatLng(this.currentPos.coords.latitude, this.currentPos.coords.longitude), 16);
         this.updateLocation();
     },(err : PositionError)=>{
         loader.dismiss();
@@ -160,18 +180,23 @@ export class HomePage {
   updateLocation(){
     let watch = this.geolocation.watchPosition();
     watch.subscribe((pos) => {
-      if(!isUndefined(pos) && !isUndefined(pos.coords)) {
+      // if(!isUndefined(pos) && !isUndefined(pos.coords)) {
         this.currentPos = pos;
         let current_position = {
           lat: this.currentPos.coords.latitude,
           lng: this.currentPos.coords.longitude
         };
-        this.locationMarker = new google.maps.Marker({
-          position: current_position,
-          label: "Your location",
-          map: this.map
-        });
-      }
+        if(this.locationMarker){
+          this.locationMarker.setPosition(current_position);
+        }else{
+          this.locationMarker = new google.maps.Marker({
+            position: current_position,
+            label: "Your location",
+            map: this.map
+          });
+        }
+        this.map.setCenter(new google.maps.LatLng(this.currentPos.coords.latitude, this.currentPos.coords.longitude), 16);
+      // }
     });
   }
 

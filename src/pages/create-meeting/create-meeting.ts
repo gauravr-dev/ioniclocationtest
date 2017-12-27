@@ -7,7 +7,7 @@ import { DateUtils } from './../../utilities/DateUtils';
  * Ionic pages and navigation.
  */
 
-import { Component } from "@angular/core";
+import { Component, ViewChild } from "@angular/core";
 import { IonicPage, NavController, NavParams, LoadingController, AlertController } from "ionic-angular";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { RestProvider } from '../../providers/rest/rest';
@@ -32,6 +32,9 @@ export class CreateMeeting {
   submitted: boolean;
 
   public maxDate: string;
+
+  @ViewChild('datePicker') datePicker: any;
+
 
   constructor(
     public navCtrl: NavController,
@@ -84,6 +87,8 @@ export class CreateMeeting {
     this.preferences.fetch('serverurl').then((res) => {
       this.serverurl = res;
     });
+    this.starttime = DateUtils.getCurrentDateTime();
+    this.datePicker.setValue(this.starttime);
   }
 
 

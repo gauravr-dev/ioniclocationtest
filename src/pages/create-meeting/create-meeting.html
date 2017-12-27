@@ -31,14 +31,15 @@
       <ion-input [formControl]="meetingDetailsForm.controls['partner']" type="text"></ion-input>
     </ion-item>
     <ion-item>
-      <ion-label floating>
+      <ion-label stacked>
         Start Time
       </ion-label>
-      <ion-datetime
+      <ion-datetime #datePicker
         [formControl]="meetingDetailsForm.controls['meetingStartTime']"
         displayFormat="YYYY-MM-DD HH:mm"
         pickerFormat="YYYY-MM-DD HH:mm"
         [max]="maxDate"
+        [placeholder]="starttime"
       >
       </ion-datetime>
     </ion-item>
