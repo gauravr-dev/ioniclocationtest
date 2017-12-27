@@ -98,8 +98,15 @@ export class HomePage {
         mapTypeId: google.maps.MapTypeId.ROADMAP
       }
       this.map = new google.maps.Map(this.mapElement.nativeElement, mapOptions);
-    }, (err) => {
-      console.log(err);
+      let current_position = {
+        lat: position.coords.latitude,
+        lng: position.coords.longitude
+      };
+      let marker = new google.maps.Marker({
+        position: current_position,
+        label: "Your location",
+        map: this.map
+      });
     });
   }
 

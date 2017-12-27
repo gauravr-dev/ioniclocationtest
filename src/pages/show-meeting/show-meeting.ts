@@ -44,6 +44,8 @@ export class ShowMeetingPage {
   currentTime: string ;
   options : GeolocationOptions;
   currentPos : Geoposition;
+  timer:any;
+
 
   constructor(
     public navCtrl: NavController,
@@ -94,25 +96,51 @@ export class ShowMeetingPage {
     });
     this.preferences.fetch('meetingstarted').then((res) => {
       this.isStarted = (res == "false") ? false : true ;
+      if(this.isStarted){
+        this.startTimer();
+      }else{
+        this.currentTime = "00:00:00" ;
+        this.preferences.store('currentTime', "00:00:00");
+      }
     });
     this.getUserPosition();
-
-    var timestamp = new Date(0,0,0,0,0,0);
-    var interval = 1;
-    setInterval(() => {
-      // this.currentTime = Date.now()
-      timestamp = new Date(timestamp.getTime() + interval*1000);
-      this.currentTime = timestamp.getHours()+':'+timestamp.getMinutes()+':'+timestamp.getSeconds() ;
-    }, 1000);
   }
+
+  startTimer(){
+    this.preferences.fetch('currentTime').then((res) => {
+      var hms = res.split(":")
+      let h = parseInt(hms[0]) ;
+      let m = parseInt(hms[1]) ;
+      let s = parseInt(hms[2]) ;
+
+      var timestamp = new Date(0,0,0,h,m,s);
+      var interval = 1;
+      this.timer = setInterval(() => {
+        timestamp = new Date(timestamp.getTime() + interval*1000);
+        this.currentTime = this.checkTime(timestamp.getHours()) +':'
+        + this.checkTime(timestamp.getMinutes())
+        +':'+ this.checkTime(timestamp.getSeconds()) ;
+        this.preferences.store("currentTime", "" + this.currentTime) ;
+      }, 1000);
+    });
+    
+  }
+
+  checkTime(i) {
+    if (i < 10) {i = "0" + i};  // add zero in front of numbers < 10
+    return i;
+  }
+
+  stopTimer(){
+    clearInterval(this.timer);
+    this.currentTime = "00:00:00" ;
+    this.preferences.store('currentTime', "00:00:00");
+  }
+
 
   onEndMeeting(){
     var starttime = DateUtils.getCurrentDateTime();
     var description = this.meetingDetailsForm.controls['meetingDetails'].value;
-
-    // this.user = "admin" ;
-    // this.password = "admin";
-    // this.serverurl = "http://191.101.239.214:8079";
 
     let loader = this.loadingCtrl.create({
       content: "",
@@ -140,7 +168,7 @@ export class ShowMeetingPage {
             this.preferences.store('meetingstarttime', '');
             this.preferences.store('meetingpartner', '');
             this.presentAlert('Success', res['result']['message']);
-
+            this.stopTimer();
             this.navCtrl.setRoot(HomePage);
           }else{
             // show alert if status is failed.
@@ -182,6 +210,7 @@ export class ShowMeetingPage {
             this.preferences.store('meetingstarted', "true");
             this.isStarted = true ;
             this.presentAlert('Success', res['result']['message']);
+            this.startTimer();
           }else{
             // show alert if status is failed.
             this.presentAlert('Error', "Some error has been occurred.");
