@@ -49,8 +49,9 @@ export class HomePage {
   }
 
   ionViewDidLoad(){
-    this.loadMap();
+    // this.loadMap();
   }
+
   ionViewDidEnter(){
     this.preferences.fetch('username').then((res) => {
       this.user = res ;
@@ -93,7 +94,6 @@ export class HomePage {
     var lng = -122.0840 ;
 
     // static api key - AIzaSyCwCYaAzkiqQUJBtydjWJYsT2zSHtB2xXY
-
     if(!isUndefined(this.currentPos) && !isUndefined(this.currentPos.coords)) {
       lat = this.currentPos.coords.latitude ;
       lng = this.currentPos.coords.longitude ;
@@ -121,7 +121,7 @@ export class HomePage {
         map: this.map
       });
     }
-    
+
   }
 
   presentAlert(title, message) {
@@ -135,11 +135,11 @@ export class HomePage {
 
   async getUserPosition(){
     await this.platform.ready();
-    this.options = {
+    /*this.options = {
       enableHighAccuracy : true,
       timeout: 50000,
       maximumAge: 10000
-    };
+    };*/
     let loader = this.loadingCtrl.create({
       content: "Fetching current location...",
       duration: 5000,
@@ -150,22 +150,6 @@ export class HomePage {
     this.geolocation.getCurrentPosition().then((pos : Geoposition) => {
         this.currentPos = pos;
         loader.dismiss();
-
-        this.currentPos = pos;
-        let current_position = {
-          lat: this.currentPos.coords.latitude,
-          lng: this.currentPos.coords.longitude
-        };
-        if(this.locationMarker){
-          this.locationMarker.setPosition(current_position);
-        }else{
-          this.locationMarker = new google.maps.Marker({
-            position: current_position,
-            label: "Your location",
-            map: this.map
-          });
-        }
-        this.map.setCenter(new google.maps.LatLng(this.currentPos.coords.latitude, this.currentPos.coords.longitude), 16);
         this.updateLocation();
     },(err : PositionError)=>{
         loader.dismiss();
@@ -180,26 +164,26 @@ export class HomePage {
   updateLocation(){
     let watch = this.geolocation.watchPosition();
     watch.subscribe((pos) => {
-      // if(!isUndefined(pos) && !isUndefined(pos.coords)) {
         this.currentPos = pos;
-        let current_position = {
-          lat: this.currentPos.coords.latitude,
-          lng: this.currentPos.coords.longitude
-        };
-        if(this.locationMarker){
-          this.locationMarker.setPosition(current_position);
-        }else{
-          this.locationMarker = new google.maps.Marker({
-            position: current_position,
-            label: "Your location",
-            map: this.map
-          });
-        }
-        this.map.setCenter(new google.maps.LatLng(this.currentPos.coords.latitude, this.currentPos.coords.longitude), 16);
-      // }
     });
   }
 
+  updateCurrentPositionOnMap(currentPos, map){
+    let current_position = {
+      lat: currentPos.coords.latitude,
+      lng: currentPos.coords.longitude
+    };
+    if(this.locationMarker){
+      this.locationMarker.setPosition(current_position);
+    }else{
+      this.locationMarker = new google.maps.Marker({
+        position: current_position,
+        label: "Your location",
+        map: map
+      });
+    }
+    map.setCenter(new google.maps.LatLng(currentPos.coords.latitude, currentPos.coords.longitude), 16);
+  }
   onTapLogout(){
     this.preferences.store('serverurl', '');
     this.preferences.store('username', '');

@@ -26,8 +26,10 @@ export class CreateMeeting {
   user:string;
   password:string;
   serverurl:string;
-  title:string;
-  partner:string;
+  subject:string;
+  customerName:string;
+  contactPerson:string;
+  agenda:string;
   starttime:string;
   submitted: boolean;
 
@@ -46,19 +48,25 @@ export class CreateMeeting {
     private preferences: AppPreferences
   ) {
       this.meetingDetailsForm = this.formBuilder.group({
-        title:[
+        meetingSubject:[
           "",
           Validators.compose([
             Validators.required
           ])
         ],
-        partner: [
+        customerName: [
           "",
           Validators.compose([
             Validators.required
           ])
         ],
-        meetingStartTime: [
+        contactPerson: [
+          "",
+          Validators.compose([
+            Validators.required
+          ])
+        ],
+        meetingAgenda: [
           "",
           Validators.compose([
             Validators.required
@@ -76,7 +84,7 @@ export class CreateMeeting {
   }
 
   ionViewDidEnter(){
-    this.maxDate = moment().add(10, 'years').format('YYYY');
+    //this.maxDate = moment().add(10, 'years').format('YYYY');
 
     this.preferences.fetch('username').then((res) => {
       this.user = res ;
@@ -87,8 +95,9 @@ export class CreateMeeting {
     this.preferences.fetch('serverurl').then((res) => {
       this.serverurl = res;
     });
-    this.starttime = DateUtils.getCurrentDateTime();
+    /*this.starttime = DateUtils.getCurrentDateTime();
     this.datePicker.setValue(this.starttime);
+    */
   }
 
 
@@ -99,26 +108,33 @@ export class CreateMeeting {
       dismissOnPageChange:true
     });
 
-    this.title = this.meetingDetailsForm.controls['title'].value;
-    this.partner = this.meetingDetailsForm.controls['partner'].value;
+    this.subject = this.meetingDetailsForm.controls['meetingSubject'].value;
+    this.customerName = this.meetingDetailsForm.controls['customerName'].value;
+    this.contactPerson = this.meetingDetailsForm.controls['contactPerson'].value;
+    this.agenda = this.meetingDetailsForm.controls['meetingAgenda'].value;
 
-    var datetimestr = this.meetingDetailsForm.controls['meetingStartTime'].value;
-    this.starttime = DateUtils.formatDateTime(new Date(datetimestr));
-
+    /*
+      var datetimestr = this.meetingDetailsForm.controls['meetingStartTime'].value;
+    */
+    this.starttime = DateUtils.formatDateTime(new Date(new Date().getUTCMilliseconds()));
     loader.present();
     this.restProvider.createMeeting(
       this.serverurl,
       this.user,
       this.password,
-      this.title,
-      this.partner,
+      this.subject,
+      this.customerName,
+      this.contactPerson,
+      this.agenda,
       this.starttime
     ).then(
       res => {
         loader.dismiss();
         if(res['result']['status'] == 'SUCCESS'){
-          this.preferences.store('meetingtitle', this.title);
-          this.preferences.store('meetingpartner', this.partner);
+          this.preferences.store('meetingtitle', this.subject);
+          this.preferences.store('meetingpartner', this.customerName);
+          this.preferences.store('meetingcontactperson', this.contactPerson);
+          this.preferences.store('meetingagenda', this.agenda);
           this.preferences.store('meetingstarttime', this.starttime);
           this.preferences.store('meetingstarted', "false");
           this.preferences.store('meetingid', "" + res['result']['meeting_id']);

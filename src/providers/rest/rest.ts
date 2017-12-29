@@ -83,14 +83,16 @@ export class RestProvider {
     return promise;
   }
 
-  createMeeting(serverurl, user, password, name, partner_name, starttime) {
+  createMeeting(serverurl, user, password, subject, customerName, contactPerson, agenda, starttime) {
     var dateString = DateUtils.getCurrentDateTime();
     var data = JSON.stringify({
       params: {
         login: user,
         password: password,
-        name: name,
-        partner_name: partner_name,
+        name: subject,
+        partner_name: customerName,
+        contactPerson: contactPerson,
+        agenda: agenda,
         start_time: starttime
       }
     });

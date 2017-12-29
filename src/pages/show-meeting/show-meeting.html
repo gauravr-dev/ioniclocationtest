@@ -17,20 +17,31 @@
       <ion-img style="width: 180px; height: 48px; margin-top: 20px;" src="assets/imgs/logo.png"></ion-img>
     </ion-col>
   </ion-row>
-
   <ion-item>
-    <ion-col text-center>
-      <h1> {{currentTime}} </h1>
+    <ion-label>Subject</ion-label>
+    <ion-label> {{subject}} </ion-label>
+  </ion-item>
+  <ion-item>
+    <ion-label>Customer Name</ion-label>
+    <ion-label> {{customerName}} </ion-label>
+  </ion-item>
+  <ion-item>
+    <ion-label>Contact Person</ion-label>
+    <ion-label> {{contactPerson}} </ion-label>
+  </ion-item>
+  <ion-item>
+    <ion-label>Meeting agenda</ion-label>
+    <ion-label> {{agenda}} </ion-label>
+  </ion-item>
+  <ion-row>
+    <ion-col text-center center>
+      <button ion-button block style="background-color:rgb(38,38,38);"
+              (click)="isStarted ? onEndMeeting() : onStartMeeting()">
+        {{ isStarted ? "End Meeting" : "Start Meeting" }}
+      </button>
     </ion-col>
-  </ion-item>
-  <ion-item center>
-    <ion-label> {{title}} </ion-label>
-  </ion-item>
-  <ion-item>
-    <ion-label>Meeting with {{partner}}</ion-label>
-  </ion-item>
-
-  <form [formGroup]="meetingDetailsForm">
+  </ion-row>
+  <!--form [formGroup]="meetingDetailsForm">
     <ion-item *ngIf="isStarted">
       <ion-label floating>
         Description
@@ -42,15 +53,7 @@
         class="validator-error">
         Details should not be empty.
     </div>
-    <ion-row class="sign-in-button-container">
-      <ion-col text-center center>
-        <button ion-button block style="background-color:rgb(38,38,38);"
-                [disabled]="isStarted && !meetingDetailsForm.valid" (click)="isStarted ? onEndMeeting() : onStartMeeting()">
-          {{ isStarted ? "End Meeting" : "Start Meeting" }}
-        </button>
-      </ion-col>
-    </ion-row>
-  </form>
+  </form-->
 </ion-content>
 <ion-footer style="padding: 10px;" no-lines>
   <ion-item text-center>Powered by GEOTECHNOSOFT

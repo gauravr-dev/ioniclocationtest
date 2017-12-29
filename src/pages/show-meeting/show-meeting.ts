@@ -35,8 +35,10 @@ export class ShowMeetingPage {
   user:string;
   password:string;
   serverurl:string;
-  title:string;
-  partner:string;
+  subject:string;
+  customerName:string;
+  contactPerson:string;
+  agenda:string;
   datetime:string;
   detail:string;
   isStarted:boolean;
@@ -44,7 +46,7 @@ export class ShowMeetingPage {
   currentTime: string ;
   options : GeolocationOptions;
   currentPos : Geoposition;
-  timer:any;
+  //timer:any;
 
 
   constructor(
@@ -58,19 +60,10 @@ export class ShowMeetingPage {
     private geolocation : Geolocation,
     private platform: Platform
   ) {
-    this.meetingDetailsForm = this.formBuilder.group({
-      meetingDetails:[
-        "",
-        Validators.compose([
-          Validators.required
-        ])
-      ]
-    });
-  }
-
-  ionViewDidLoad() {
 
   }
+
+  ionViewDidLoad() { }
 
   ionViewDidEnter(){
     this.preferences.fetch('username').then((res) => {
@@ -83,30 +76,34 @@ export class ShowMeetingPage {
       this.serverurl = res;
     });
     this.preferences.fetch('meetingtitle').then((res) => {
-      this.title = res ;
+      this.subject = res ;
     });
     this.preferences.fetch('meetingpartner').then((res) => {
-      this.partner = res;
+      this.customerName = res;
     });
-    this.preferences.fetch('meetingstarttime').then((res) => {
-      this.datetime = res;
+    this.preferences.fetch('meetingcontactperson').then((res) => {
+      this.contactPerson = res;
+    });
+    this.preferences.fetch('meetingagenda').then((res) => {
+      this.agenda = res;
     });
     this.preferences.fetch('meetingid').then((res) => {
       this.meetingid = res;
     });
+
     this.preferences.fetch('meetingstarted').then((res) => {
       this.isStarted = (res == "false") ? false : true ;
-      if(this.isStarted){
+      /*if(this.isStarted){
         this.startTimer();
       }else{
         this.currentTime = "00:00:00" ;
         this.preferences.store('currentTime', "00:00:00");
-      }
+      }*/
     });
     this.getUserPosition();
   }
 
-  startTimer(){
+  /*startTimer(){
     this.preferences.fetch('currentTime').then((res) => {
       var hms = res.split(":")
       let h = parseInt(hms[0]) ;
@@ -123,7 +120,7 @@ export class ShowMeetingPage {
         this.preferences.store("currentTime", "" + this.currentTime) ;
       }, 1000);
     });
-    
+
   }
 
   checkTime(i) {
@@ -135,7 +132,7 @@ export class ShowMeetingPage {
     clearInterval(this.timer);
     this.currentTime = "00:00:00" ;
     this.preferences.store('currentTime', "00:00:00");
-  }
+  }*/
 
 
   onEndMeeting(){
@@ -162,13 +159,13 @@ export class ShowMeetingPage {
           loader.dismiss();
           if(res['result']['status'] == 'SUCCESS'){
             this.preferences.store('meetingstarted', "");
-
             this.preferences.store('meetingid', '');
             this.preferences.store('meetingtitle', '');
             this.preferences.store('meetingstarttime', '');
+            this.preferences.store('meetingcontactperson', '');
+            this.preferences.store('meetingagenda', '');
             this.preferences.store('meetingpartner', '');
             this.presentAlert('Success', res['result']['message']);
-            this.stopTimer();
             this.navCtrl.setRoot(HomePage);
           }else{
             // show alert if status is failed.
@@ -210,7 +207,6 @@ export class ShowMeetingPage {
             this.preferences.store('meetingstarted', "true");
             this.isStarted = true ;
             this.presentAlert('Success', res['result']['message']);
-            this.startTimer();
           }else{
             // show alert if status is failed.
             this.presentAlert('Error', "Some error has been occurred.");
@@ -232,9 +228,9 @@ export class ShowMeetingPage {
     this.geolocation.getCurrentPosition(this.options).then((pos : Geoposition) => {
         this.currentPos = pos;
         let watch = this.geolocation.watchPosition();
-        watch.subscribe((pos) => {
-        this.currentPos = pos;
-    });
+          watch.subscribe((pos) => {
+          this.currentPos = pos;
+        });
     },(err : PositionError)=>{
     })
   }

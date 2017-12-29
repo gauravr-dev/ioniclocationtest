@@ -16,21 +16,39 @@
       <ion-img style="width: 180px; height: 48px; margin-top: 20px;" src="assets/imgs/logo.png"></ion-img>
     </ion-col>
   </ion-row>
+<!-- Meeting subject
 
+
+    Customer Nmae
+    Contact Person
+    Meeting agenda
+-->
   <form [formGroup]="meetingDetailsForm">
     <ion-item>
       <ion-label floating>
         Title
       </ion-label>
-      <ion-input [formControl]="meetingDetailsForm.controls['title']" type="text"></ion-input>
+      <ion-input [formControl]="meetingDetailsForm.controls['meetingSubject']" type="text"></ion-input>
     </ion-item>
     <ion-item>
       <ion-label floating>
-        Meeting Partner
+        Customer Name
       </ion-label>
-      <ion-input [formControl]="meetingDetailsForm.controls['partner']" type="text"></ion-input>
+      <ion-input [formControl]="meetingDetailsForm.controls['customerName']" type="text"></ion-input>
     </ion-item>
     <ion-item>
+      <ion-label floating>
+        Contact Person
+      </ion-label>
+      <ion-input [formControl]="meetingDetailsForm.controls['contactPerson']" type="text"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label floating>
+        Meeting agenda
+      </ion-label>
+      <ion-input [formControl]="meetingDetailsForm.controls['meetingAgenda']" type="text"></ion-input>
+    </ion-item>
+    <!--ion-item>
       <ion-label stacked>
         Start Time
       </ion-label>
@@ -42,7 +60,7 @@
         [placeholder]="starttime"
       >
       </ion-datetime>
-    </ion-item>
+    </ion-item-->
     <ion-row class="sign-in-button-container">
       <ion-col text-center center>
         <button ion-button block style="background-color:rgb(38,38,38);"
