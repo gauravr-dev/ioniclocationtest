@@ -80,6 +80,7 @@ export class RestProvider {
         }
       );
     });
+    
     return promise;
   }
 

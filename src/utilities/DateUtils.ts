@@ -2,7 +2,7 @@
 
 export class DateUtils {
   public static getCurrentDateTime() {
-    var date = new Date();
+    var date = new Date(Date.now());
     var dateString =
       date.getUTCFullYear() +
       "-" +

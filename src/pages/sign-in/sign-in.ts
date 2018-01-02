@@ -90,7 +90,7 @@ export class SignInPage {
         err => {
           loader.dismiss();
           // show alert if error occurred.
-          this.presentAlert('Error', err.message);
+          this.presentAlert('Error', err.message + serverurl);
         }
       );
     }

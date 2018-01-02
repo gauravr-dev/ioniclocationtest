@@ -102,7 +102,28 @@ export class CreateMeeting {
 
 
   onCreateMeeting(){
-    let loader = this.loadingCtrl.create({
+
+
+
+    let alert = this.alertCtrl.create();
+    alert.setTitle('Lightsaber color');
+
+    alert.addInput({
+      type: 'textarea',
+      label: 'Description',
+      value: 'Description'
+    });
+
+    alert.addButton('Cancel');
+    alert.addButton({
+      text: 'OK',
+      handler: data => {
+      }
+    });
+    alert.present();
+    return;
+
+    /*let loader = this.loadingCtrl.create({
       content: "",
       duration: 5000,
       dismissOnPageChange:true
@@ -115,8 +136,8 @@ export class CreateMeeting {
 
     /*
       var datetimestr = this.meetingDetailsForm.controls['meetingStartTime'].value;
-    */
-    this.starttime = DateUtils.formatDateTime(new Date(new Date().getUTCMilliseconds()));
+    *
+    this.starttime = DateUtils.formatDateTime(new Date(Date.now()));
     loader.present();
     this.restProvider.createMeeting(
       this.serverurl,
@@ -150,7 +171,7 @@ export class CreateMeeting {
         // show alert if error occurred.
         this.presentAlert('Error', err.message);
       }
-    )
+    )*/
   }
 
 
