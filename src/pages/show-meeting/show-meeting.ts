@@ -21,6 +21,8 @@ import { AppPreferences } from '@ionic-native/app-preferences' ;
 import { Geolocation ,GeolocationOptions ,Geoposition ,PositionError } from '@ionic-native/geolocation';
 
 import * as moment from 'moment';
+import { ModalController } from 'ionic-angular/components/modal/modal-controller';
+import { EndMeetingPage } from '../end-meeting/end-meeting';
 
 @IonicPage()
 @Component({
@@ -48,7 +50,6 @@ export class ShowMeetingPage {
   currentPos : Geoposition;
   //timer:any;
 
-
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
@@ -58,7 +59,8 @@ export class ShowMeetingPage {
     private alertCtrl: AlertController,
     private preferences: AppPreferences,
     private geolocation : Geolocation,
-    private platform: Platform
+    private platform: Platform,
+    private modalController: ModalController
   ) {
 
   }
@@ -136,46 +138,58 @@ export class ShowMeetingPage {
 
 
   onEndMeeting(){
-    var starttime = DateUtils.getCurrentDateTime();
-    var description = this.meetingDetailsForm.controls['meetingDetails'].value;
 
-    let loader = this.loadingCtrl.create({
-      content: "",
-      duration: 5000,
-      dismissOnPageChange:true
-    });
-    loader.present();
+    let controller = this.modalController.create(EndMeetingPage);
 
-    this.restProvider.endMeeting(
-      this.serverurl,
-      this.user,
-      this.password,
-      this.meetingid,
-      this.currentPos.coords.latitude,
-      this.currentPos.coords.longitude,
-      starttime,
-      description).then(
-        res => {
-          loader.dismiss();
-          if(res['result']['status'] == 'SUCCESS'){
-            this.preferences.store('meetingstarted', "");
-            this.preferences.store('meetingid', '');
-            this.preferences.store('meetingtitle', '');
-            this.preferences.store('meetingstarttime', '');
-            this.preferences.store('meetingcontactperson', '');
-            this.preferences.store('meetingagenda', '');
-            this.preferences.store('meetingpartner', '');
-            this.presentAlert('Success', res['result']['message']);
-            this.navCtrl.setRoot(HomePage);
-          }else{
-            // show alert if status is failed.
-            this.presentAlert('Error', "Some error has been occurred.");
-          }
-        },
-        err => {
-          this.presentAlert('Error', "Some error has been occurred.");
+    controller.onDidDismiss(data => {
+
+      if(undefined === data){
+        // nothing to do.
+      }else{
+        var starttime = DateUtils.getCurrentDateTime();
+        var description = data ;
+
+        let loader = this.loadingCtrl.create({
+          content: "",
+          duration: 5000,
+          dismissOnPageChange:true
+        });
+        loader.present();
+
+        this.restProvider.endMeeting(
+          this.serverurl,
+          this.user,
+          this.password,
+          this.meetingid,
+          this.currentPos.coords.latitude,
+          this.currentPos.coords.longitude,
+          starttime,
+          description).then(
+            res => {
+              loader.dismiss();
+              if(res['result']['status'] == 'SUCCESS'){
+                this.preferences.store('meetingstarted', "");
+                this.preferences.store('meetingid', '');
+                this.preferences.store('meetingtitle', '');
+                this.preferences.store('meetingstarttime', '');
+                this.preferences.store('meetingcontactperson', '');
+                this.preferences.store('meetingagenda', '');
+                this.preferences.store('meetingpartner', '');
+                this.presentAlert('Success', res['result']['message']);
+                this.navCtrl.setRoot(HomePage);
+              }else{
+                // show alert if status is failed.
+                this.presentAlert('Error', "Some error has been occurred.");
+              }
+            },
+            err => {
+              this.presentAlert('Error', "Some error has been occurred.");
+            }
+          )
         }
-      )
+      }
+    );
+    controller.present();
   }
 
   onStartMeeting(){

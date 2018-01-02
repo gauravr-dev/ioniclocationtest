@@ -13,6 +13,21 @@
 </ion-header-->
 
 
-<ion-content padding>
-
+<ion-content padding nolines>
+  <ion-row>
+    <ion-col text-center center>
+        <ion-label stacked>Description</ion-label>
+        <ion-textarea [(ngModel)]="meetingNotes"></ion-textarea>
+    </ion-col>
+  </ion-row>
+  <ion-row>
+    <ion-col text-center center>
+      <button ion-button block style="background-color:rgb(187, 34, 34);"
+              (click)="onTapCancel()">Cancel</button>
+    </ion-col>
+    <ion-col text-center center>
+      <button ion-button block style="background-color:rgb(38,38,38);"
+              (click)="onEndMeeting()">End Meeting</button>
+    </ion-col>
+  </ion-row>
 </ion-content>

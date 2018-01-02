@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { ViewController } from 'ionic-angular/navigation/view-controller';
 
 /**
  * Generated class for the EndMeetingPage page.
@@ -14,12 +15,20 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
   templateUrl: 'end-meeting.html',
 })
 export class EndMeetingPage {
+  // vars
+  meetingNotes: string ;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
+  constructor(public viewCtrl: ViewController) {}
+
+  onTapEndMeeting(){
+    this.viewCtrl.dismiss(this.meetingNotes);
+  }
+
+  onTapCancel(){
+    this.viewCtrl.dismiss();
   }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad EndMeetingPage');
   }
-
 }
