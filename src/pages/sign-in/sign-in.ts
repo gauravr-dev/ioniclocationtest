@@ -34,7 +34,7 @@ export class SignInPage {
     // "http://191.101.239.214:8079",
     this.credentialsForm = this.formBuilder.group({
       serverurl:[
-        "http://47.74.157.145:8069",
+        "http://47.74.157.145:8070",
         Validators.compose([
           Validators.required
         ])
@@ -93,13 +93,9 @@ export class SignInPage {
         err => {
           loader.dismiss();
           // show alert if error occurred.
-          this.presentAlert('Error', err.message + serverurl);
+          this.presentAlert('Error', "Error in server connection.");
         }
       );
     }
-  }
-
-  public onForgotPassword() {
-
   }
 }

@@ -181,7 +181,7 @@ export class ShowMeetingPage {
               }
             },
             err => {
-              this.presentAlert('Error', "Some error has been occurred.");
+              this.presentAlert('Error', "Error in server connection.");
             }
           )
         }

@@ -3,7 +3,7 @@
     <name>BingoCRM</name>
     <description>An awesome Ionic/Cordova app.</description>
     <author email="gauravr.dev@gmail.com" href="http://ionicframework.com/">Gaurav Rajput</author>
-    <content original-src="index.html" src="http://192.168.0.7:8100" />
+    <content src="index.html" />
     <access origin="*" />
     <allow-intent href="http://*/*" />
     <allow-intent href="https://*/*" />
@@ -103,4 +103,5 @@
         <variable name="LOCATION_WHEN_IN_USE_DESCRIPTION" value="Show your location on the map" />
         <variable name="LOCATION_ALWAYS_USAGE_DESCRIPTION" value="Trace your location on the map" />
     </plugin>
+    <allow-navigation href="http://192.168.100.52:8100" />
 </widget>

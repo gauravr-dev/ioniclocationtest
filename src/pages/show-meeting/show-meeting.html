@@ -36,24 +36,11 @@
   <ion-row style="background-color: transparent">
     <ion-col text-center center>
       <button ion-button block style="background-color:rgb(38,38,38);"
-              (click)="isStarted ? onEndMeeting() : onStartMeeting()">
-        {{ isStarted ? "End Meeting" : "Start Meeting" }}
+              (click)="onEndMeeting()">
+        {{"End Meeting"}}
       </button>
     </ion-col>
   </ion-row>
-  <!--form [formGroup]="meetingDetailsForm">
-    <ion-item *ngIf="isStarted">
-      <ion-label floating>
-        Description
-      </ion-label>
-      <ion-input [formControl]="meetingDetailsForm.controls['meetingDetails']" type="text"></ion-input>
-    </ion-item>
-    <div *ngIf="isStarted && meetingDetailsForm.controls['meetingDetails'].hasError('pattern') &&
-        (meetingDetailsForm.controls['meetingDetails'].dirty)"
-        class="validator-error">
-        Details should not be empty.
-    </div>
-  </form-->
 </ion-content>
 <ion-footer style="padding: 10px;" no-lines>
   <ion-item text-center style="background-color: transparent">Powered by GEOTECHNOSOFT

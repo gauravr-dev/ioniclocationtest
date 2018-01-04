@@ -21,9 +21,6 @@ import { RestProvider } from '../../providers/rest/rest';
 import { AppPreferences } from '@ionic-native/app-preferences' ;
 import { Geolocation ,GeolocationOptions ,Geoposition ,PositionError } from '@ionic-native/geolocation';
 
-
-import * as moment from 'moment';
-
 @IonicPage()
 @Component({
   selector: 'page-create-meeting',
@@ -88,6 +85,7 @@ export class CreateMeeting {
   }
 
   ionViewDidLoad() {
+    this.getUserPosition();
   }
 
   ionViewDidEnter(){
@@ -103,7 +101,6 @@ export class CreateMeeting {
     /*this.starttime = DateUtils.getCurrentDateTime();
     this.datePicker.setValue(this.starttime);
     */
-    this.getUserPosition();
   }
 
 
@@ -181,7 +178,7 @@ export class CreateMeeting {
       err => {
         loader.dismiss();
         // show alert if error occurred.
-        this.presentAlert('Error', err.message);
+        this.presentAlert('Error', "Error in server connection.");
       }
     )
   }
@@ -200,7 +197,6 @@ export class CreateMeeting {
     this.options = {
       enableHighAccuracy : true
     };
-
     this.geolocation.getCurrentPosition(this.options).then((pos : Geoposition) => {
         this.currentPos = pos;
         let watch = this.geolocation.watchPosition();

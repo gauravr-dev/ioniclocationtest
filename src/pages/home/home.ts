@@ -50,6 +50,7 @@ export class HomePage {
 
   ionViewDidLoad(){
     // this.loadMap();
+    this.getUserPosition();
   }
 
   ionViewDidEnter(){
@@ -62,7 +63,7 @@ export class HomePage {
     this.preferences.fetch('serverurl').then((res) => {
       this.serverurl = res;
     });
-    this.getUserPosition();
+
   }
 
   onSendLocation(){
@@ -76,7 +77,7 @@ export class HomePage {
         }
       },
       err => {
-        this.presentAlert('Error', err.message);
+        this.presentAlert('Error', "Error in server connection.");
       });
     }
   }
@@ -153,7 +154,7 @@ export class HomePage {
         this.updateLocation();
     },(err : PositionError)=>{
         loader.dismiss();
-        this.presentAlert('Error', err.message);
+        this.presentAlert('LocationError', err.message);
         this.updateLocation();
     })
   }
@@ -184,6 +185,8 @@ export class HomePage {
     }
     map.setCenter(new google.maps.LatLng(currentPos.coords.latitude, currentPos.coords.longitude), 16);
   }
+
+
   onTapLogout(){
     this.preferences.store('serverurl', '');
     this.preferences.store('username', '');
