@@ -20,6 +20,7 @@ export class SignInPage {
   public emailState: any = "out";
   public passwordState: any = "in";
 
+  //
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
@@ -29,9 +30,11 @@ export class SignInPage {
     private alertCtrl: AlertController,
     private preferences: AppPreferences
   ) {
+    // 47.74.157.145:8069
+    // "http://191.101.239.214:8079",
     this.credentialsForm = this.formBuilder.group({
       serverurl:[
-        "http://191.101.239.214:8079",
+        "http://47.74.157.145:8069",
         Validators.compose([
           Validators.required
         ])

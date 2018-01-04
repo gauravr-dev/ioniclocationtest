@@ -37,7 +37,7 @@ export class MyApp {
             if (this.user != null && this.user != '') {
               this.rootPage = HomePage ;
             }else{
-              this.rootPage = CreateMeeting ;
+              this.rootPage = SignInPage ;
             }
           });
         }

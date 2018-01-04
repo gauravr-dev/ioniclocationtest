@@ -80,7 +80,7 @@ export class RestProvider {
         }
       );
     });
-    
+
     return promise;
   }
 
@@ -92,8 +92,8 @@ export class RestProvider {
         password: password,
         name: subject,
         partner_name: customerName,
-        contactPerson: contactPerson,
-        agenda: agenda,
+        contact_name: contactPerson,
+        meeting_agenda: agenda,
         start_time: starttime
       }
     });
@@ -154,7 +154,6 @@ export class RestProvider {
 
   endMeeting(serverurl, user, password, meetingid, latitude, longitude, endtime, description) {
     var dateString = DateUtils.getCurrentDateTime();
-
     var data = JSON.stringify({
       params: {
         login: user,

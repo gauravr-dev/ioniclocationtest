@@ -16,9 +16,11 @@ import { ViewController } from 'ionic-angular/navigation/view-controller';
 })
 export class EndMeetingPage {
   // vars
-  meetingNotes: string ;
+  meetingNotes:string ;
 
-  constructor(public viewCtrl: ViewController) {}
+  //
+  constructor(public viewCtrl: ViewController) {
+  }
 
   onTapEndMeeting(){
     this.viewCtrl.dismiss(this.meetingNotes);
@@ -29,6 +31,6 @@ export class EndMeetingPage {
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad EndMeetingPage');
+    // console.log('ionViewDidLoad EndMeetingPage');
   }
 }

@@ -5,42 +5,37 @@
   Ionic pages and navigation.
 -->
 <ion-header>
-  <ion-navbar>
-    <ion-title>Create Meeting</ion-title>
+  <ion-navbar class="nav-bar">
+    <ion-title>Meeting Log</ion-title>
   </ion-navbar>
 </ion-header>
 
-<ion-content padding>
-  <ion-row class="app-icon-container">
+<ion-content padding class="page-background">
+  <ion-row>
     <ion-col text-center>
       <ion-img style="width: 180px; height: 48px; margin-top: 20px;" src="assets/imgs/logo.png"></ion-img>
     </ion-col>
   </ion-row>
-<!-- Meeting subject
-    Customer Nmae
-    Contact Person
-    Meeting agenda
--->
-  <form [formGroup]="meetingDetailsForm">
-    <ion-item>
+  <form [formGroup]="meetingDetailsForm" style="background-color: transparent">
+    <ion-item style="background-color: transparent">
       <ion-label floating>
         Title
       </ion-label>
       <ion-input [formControl]="meetingDetailsForm.controls['meetingSubject']" type="text"></ion-input>
     </ion-item>
-    <ion-item>
+    <ion-item style="background-color: transparent">
       <ion-label floating>
         Customer Name
       </ion-label>
       <ion-input [formControl]="meetingDetailsForm.controls['customerName']" type="text"></ion-input>
     </ion-item>
-    <ion-item>
+    <ion-item style="background-color: transparent">
       <ion-label floating>
         Contact Person
       </ion-label>
       <ion-input [formControl]="meetingDetailsForm.controls['contactPerson']" type="text"></ion-input>
     </ion-item>
-    <ion-item>
+    <ion-item style="background-color: transparent">
       <ion-label floating>
         Meeting agenda
       </ion-label>
@@ -59,18 +54,18 @@
       >
       </ion-datetime>
     </ion-item-->
-    <ion-row class="sign-in-button-container">
+    <ion-row style="background-color: transparent">
       <ion-col text-center center>
         <button ion-button block style="background-color:rgb(38,38,38);"
-                [disabled]="!meetingDetailsForm.valid" (click)="onCreateMeeting()">
-          Save Meeting
+                [disabled]="!meetingDetailsForm.valid" (click)="onStartMeeting()">
+          Start Meeting
         </button>
       </ion-col>
     </ion-row>
   </form>
 </ion-content>
 <ion-footer style="padding: 10px;" no-lines>
-  <ion-item text-center>Powered by GEOTECHNOSOFT
+  <ion-item style="background-color: transparent" text-center>Powered by GEOTECHNOSOFT
     <!-- Powered by <ion-img src="assets/imgs/sitelogo.png"></ion-img> -->
   </ion-item>
 </ion-footer>

@@ -13,15 +13,14 @@ import { IonicPage,
   NavParams,
   LoadingController,
   AlertController,
-  Platform
+  Platform,
+  ModalController
 } from "ionic-angular" ;
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { RestProvider } from '../../providers/rest/rest';
 import { AppPreferences } from '@ionic-native/app-preferences' ;
 import { Geolocation ,GeolocationOptions ,Geoposition ,PositionError } from '@ionic-native/geolocation';
 
-import * as moment from 'moment';
-import { ModalController } from 'ionic-angular/components/modal/modal-controller';
 import { EndMeetingPage } from '../end-meeting/end-meeting';
 
 @IonicPage()
@@ -48,7 +47,6 @@ export class ShowMeetingPage {
   currentTime: string ;
   options : GeolocationOptions;
   currentPos : Geoposition;
-  //timer:any;
 
   constructor(
     public navCtrl: NavController,
@@ -191,47 +189,6 @@ export class ShowMeetingPage {
     );
     controller.present();
   }
-
-  onStartMeeting(){
-    var starttime = DateUtils.getCurrentDateTime();
-    let loader = this.loadingCtrl.create({
-      content: "",
-      duration: 5000,
-      dismissOnPageChange:true
-    });
-    loader.present();
-
-
-    this.user = "admin" ;
-    this.password = "admin";
-    this.serverurl = "http://191.101.239.214:8079";
-
-    this.restProvider.startMeeting(
-      this.serverurl,
-      this.user,
-      this.password,
-      this.meetingid,
-      this.currentPos.coords.latitude,
-      this.currentPos.coords.longitude,
-      starttime).then(
-        res => {
-          loader.dismiss();
-          // this.presentAlert('Success', JSON.stringify(res));
-          if(res['result']['status'] == 'SUCCESS'){
-            this.preferences.store('meetingstarted', "true");
-            this.isStarted = true ;
-            this.presentAlert('Success', res['result']['message']);
-          }else{
-            // show alert if status is failed.
-            this.presentAlert('Error', "Some error has been occurred.");
-          }
-        },
-        err => {
-          this.presentAlert('Error', "Some error has been occurred.");
-        }
-      )
-  }
-
 
   async getUserPosition(){
     await this.platform.ready();

@@ -3,7 +3,7 @@
     <name>BingoCRM</name>
     <description>An awesome Ionic/Cordova app.</description>
     <author email="gauravr.dev@gmail.com" href="http://ionicframework.com/">Gaurav Rajput</author>
-    <content src="index.html" />
+    <content original-src="index.html" src="http://192.168.0.7:8100" />
     <access origin="*" />
     <allow-intent href="http://*/*" />
     <allow-intent href="https://*/*" />
@@ -83,6 +83,9 @@
     <allow-navigation href="http://192.168.43.27:8102" />
     <allow-navigation href="http://192.168.43.27:8103" />
     <allow-navigation href="http://192.168.100.41:8100" />
+    <allow-navigation href="http://192.168.43.27:8104" />
+    <allow-navigation href="http://192.168.0.4:8100" />
+    <allow-navigation href="http://192.168.0.7:8100" />
     <engine name="ios" spec="~4.5.4" />
     <engine name="android" spec="~6.3.0" />
     <plugin name="cordova-plugin-geolocation" spec="^3.0.0">
@@ -95,10 +98,9 @@
     <plugin name="ionic-plugin-keyboard" spec="^2.2.1" />
     <plugin name="cordova-plugin-app-preferences" spec="^0.99.3" />
     <plugin name="cordova-plugin-googlemaps" spec="^2.1.1">
-        <variable name="API_KEY_FOR_ANDROID" value="AIzaSyBIzyHLRp90oilyzZg62X8DpVSoccsZaQ0" />
-        <variable name="API_KEY_FOR_IOS" value="AIzaSyBIzyHLRp90oilyzZg62X8DpVSoccsZaQ0" />
+        <variable name="API_KEY_FOR_ANDROID" value="AIzaSyDiDsekjZg3AMzaWz8UNbYunRAR28Nwoq4" />
+        <variable name="API_KEY_FOR_IOS" value="AIzaSyCwD2pFJELoUQRbijzkuAbyI5k6UdYmwEE" />
         <variable name="LOCATION_WHEN_IN_USE_DESCRIPTION" value="Show your location on the map" />
         <variable name="LOCATION_ALWAYS_USAGE_DESCRIPTION" value="Trace your location on the map" />
     </plugin>
-    <allow-navigation href="http://192.168.43.27:8104" />
 </widget>

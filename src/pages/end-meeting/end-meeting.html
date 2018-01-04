@@ -4,30 +4,29 @@
   See http://ionicframework.com/docs/components/#navigation for more info on
   Ionic pages and navigation.
 -->
-<!--ion-header>
+<ion-header>
 
   <ion-navbar>
-    <ion-title>end-meeting</ion-title>
+    <ion-title>Add Meeting Notes</ion-title>
   </ion-navbar>
 
-</ion-header-->
+</ion-header>
 
-
-<ion-content padding nolines>
-  <ion-row>
-    <ion-col text-center center>
-        <ion-label stacked>Description</ion-label>
-        <ion-textarea [(ngModel)]="meetingNotes"></ion-textarea>
+<ion-content padding class="page-background">
+  <ion-row style="background-color: transparent; margin-top: 20px;">
+    <ion-col>
+        <ion-label stacked>Meeting Notes</ion-label>
+        <ion-textarea style="height: 80px;border-style: solid; border-width: 1px; border-color: black;" [(ngModel)]="meetingNotes"></ion-textarea>
     </ion-col>
   </ion-row>
-  <ion-row>
-    <ion-col text-center center>
+  <ion-row style="background-color: transparent">
+    <ion-col>
       <button ion-button block style="background-color:rgb(187, 34, 34);"
               (click)="onTapCancel()">Cancel</button>
     </ion-col>
     <ion-col text-center center>
       <button ion-button block style="background-color:rgb(38,38,38);"
-              (click)="onEndMeeting()">End Meeting</button>
+              (click)="onTapEndMeeting()">End Meeting</button>
     </ion-col>
   </ion-row>
 </ion-content>

@@ -8,10 +8,19 @@ import { DateUtils } from './../../utilities/DateUtils';
  */
 
 import { Component, ViewChild } from "@angular/core";
-import { IonicPage, NavController, NavParams, LoadingController, AlertController } from "ionic-angular";
+import {
+  IonicPage,
+  NavController,
+  NavParams,
+  LoadingController,
+  AlertController,
+  Platform
+} from "ionic-angular";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { RestProvider } from '../../providers/rest/rest';
 import { AppPreferences } from '@ionic-native/app-preferences' ;
+import { Geolocation ,GeolocationOptions ,Geoposition ,PositionError } from '@ionic-native/geolocation';
+
 
 import * as moment from 'moment';
 
@@ -32,7 +41,8 @@ export class CreateMeeting {
   agenda:string;
   starttime:string;
   submitted: boolean;
-
+  options : GeolocationOptions;
+  currentPos : Geoposition;
   public maxDate: string;
 
   @ViewChild('datePicker') datePicker: any;
@@ -45,7 +55,9 @@ export class CreateMeeting {
     private restProvider: RestProvider,
     public loadingCtrl: LoadingController,
     private alertCtrl: AlertController,
-    private preferences: AppPreferences
+    private preferences: AppPreferences,
+    private geolocation : Geolocation,
+    private platform: Platform,
   ) {
       this.meetingDetailsForm = this.formBuilder.group({
         meetingSubject:[
@@ -73,19 +85,12 @@ export class CreateMeeting {
           ])
         ]
       });
-
-      // this.user = "admin" ;
-      // this.password = "admin";
-      // this.serverurl = "http://191.101.239.214:8079";
-
   }
 
   ionViewDidLoad() {
   }
 
   ionViewDidEnter(){
-    //this.maxDate = moment().add(10, 'years').format('YYYY');
-
     this.preferences.fetch('username').then((res) => {
       this.user = res ;
     });
@@ -98,32 +103,12 @@ export class CreateMeeting {
     /*this.starttime = DateUtils.getCurrentDateTime();
     this.datePicker.setValue(this.starttime);
     */
+    this.getUserPosition();
   }
 
 
-  onCreateMeeting(){
-
-
-
-    let alert = this.alertCtrl.create();
-    alert.setTitle('Lightsaber color');
-
-    alert.addInput({
-      type: 'textarea',
-      label: 'Description',
-      value: 'Description'
-    });
-
-    alert.addButton('Cancel');
-    alert.addButton({
-      text: 'OK',
-      handler: data => {
-      }
-    });
-    alert.present();
-    return;
-
-    /*let loader = this.loadingCtrl.create({
+  onStartMeeting(){
+    let loader = this.loadingCtrl.create({
       content: "",
       duration: 5000,
       dismissOnPageChange:true
@@ -136,9 +121,10 @@ export class CreateMeeting {
 
     /*
       var datetimestr = this.meetingDetailsForm.controls['meetingStartTime'].value;
-    *
+    */
     this.starttime = DateUtils.formatDateTime(new Date(Date.now()));
     loader.present();
+
     this.restProvider.createMeeting(
       this.serverurl,
       this.user,
@@ -152,15 +138,41 @@ export class CreateMeeting {
       res => {
         loader.dismiss();
         if(res['result']['status'] == 'SUCCESS'){
+          let meetingid = res['result']['meeting_id'] ;
           this.preferences.store('meetingtitle', this.subject);
           this.preferences.store('meetingpartner', this.customerName);
           this.preferences.store('meetingcontactperson', this.contactPerson);
           this.preferences.store('meetingagenda', this.agenda);
           this.preferences.store('meetingstarttime', this.starttime);
           this.preferences.store('meetingstarted', "false");
-          this.preferences.store('meetingid', "" + res['result']['meeting_id']);
-          this.navCtrl.setRoot(ShowMeetingPage);
-          this.presentAlert('Success', res['result']['message']);
+          this.preferences.store('meetingid', "" + meetingid);
+          // this.presentAlert('Success', res['result']['message']);
+
+          // It API to start
+          this.restProvider.startMeeting(
+            this.serverurl,
+            this.user,
+            this.password,
+            meetingid,
+            this.currentPos.coords.latitude,
+            this.currentPos.coords.longitude,
+            this.starttime
+          ).then(
+              res => {
+                loader.dismiss();
+                if(res['result']['status'] == 'SUCCESS'){
+                  this.preferences.store('meetingstarted', "true");
+                  this.presentAlert('Success', 'Meeting started successfully.'); // res['result']['message']
+                  this.navCtrl.setRoot(ShowMeetingPage);
+                }else{
+                  // show alert if status is failed.
+                  this.presentAlert('Error', "Some error has been occurred.");
+                }
+              },
+              err => {
+                this.presentAlert('Error', "Some error has been occurred.");
+              }
+            )
         }else{
           // show alert if status is failed.
           this.presentAlert('Error', "Some error has been occurred.");
@@ -171,9 +183,8 @@ export class CreateMeeting {
         // show alert if error occurred.
         this.presentAlert('Error', err.message);
       }
-    )*/
+    )
   }
-
 
   presentAlert(title, message) {
     let alert = this.alertCtrl.create({
@@ -183,5 +194,23 @@ export class CreateMeeting {
     });
     alert.present();
   }
+
+  async getUserPosition(){
+    await this.platform.ready();
+    this.options = {
+      enableHighAccuracy : true
+    };
+
+    this.geolocation.getCurrentPosition(this.options).then((pos : Geoposition) => {
+        this.currentPos = pos;
+        let watch = this.geolocation.watchPosition();
+          watch.subscribe((pos) => {
+          this.currentPos = pos;
+        });
+    },(err : PositionError)=>{
+    })
+  }
+
+
 
 }

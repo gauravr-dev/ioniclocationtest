@@ -1,3 +1,4 @@
+import { EndMeetingPage } from './../pages/end-meeting/end-meeting';
 import { ShowMeetingPageModule } from './../pages/show-meeting/show-meeting.module';
 import { ShowMeetingPage } from './../pages/show-meeting/show-meeting';
 import { CreateMeetingModule } from './../pages/create-meeting/create-meeting.module';
@@ -17,6 +18,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { Geolocation } from '@ionic-native/geolocation';
 import { AppPreferences } from '@ionic-native/app-preferences';
 import { GoogleMaps } from '@ionic-native/google-maps';
+import { EndMeetingPageModule } from '../pages/end-meeting/end-meeting.module';
 
 @NgModule({
   declarations: [
@@ -29,7 +31,8 @@ import { GoogleMaps } from '@ionic-native/google-maps';
     HttpClientModule,
     SignInPageModule,
     CreateMeetingModule,
-    ShowMeetingPageModule
+    ShowMeetingPageModule,
+    EndMeetingPageModule
   ],
   bootstrap: [IonicApp],
   entryComponents: [
@@ -37,7 +40,8 @@ import { GoogleMaps } from '@ionic-native/google-maps';
     SignInPage,
     HomePage,
     CreateMeeting,
-    ShowMeetingPage
+    ShowMeetingPage,
+    EndMeetingPage
   ],
   providers: [
     StatusBar,
