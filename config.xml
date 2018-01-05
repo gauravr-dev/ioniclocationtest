@@ -86,6 +86,8 @@
     <allow-navigation href="http://192.168.43.27:8104" />
     <allow-navigation href="http://192.168.0.4:8100" />
     <allow-navigation href="http://192.168.0.7:8100" />
+    <allow-navigation href="http://192.168.100.52:8100" />
+    <allow-navigation href="http://192.168.0.6:8101" />
     <engine name="ios" spec="~4.5.4" />
     <engine name="android" spec="~6.3.0" />
     <plugin name="cordova-plugin-geolocation" spec="^3.0.0">
@@ -103,5 +105,4 @@
         <variable name="LOCATION_WHEN_IN_USE_DESCRIPTION" value="Show your location on the map" />
         <variable name="LOCATION_ALWAYS_USAGE_DESCRIPTION" value="Trace your location on the map" />
     </plugin>
-    <allow-navigation href="http://192.168.100.52:8100" />
 </widget>
