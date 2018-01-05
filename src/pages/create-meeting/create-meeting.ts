@@ -20,6 +20,7 @@ import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { RestProvider } from '../../providers/rest/rest';
 import { AppPreferences } from '@ionic-native/app-preferences' ;
 import { Geolocation ,GeolocationOptions ,Geoposition ,PositionError } from '@ionic-native/geolocation';
+import { isUndefined } from 'ionic-angular/util/util';
 
 @IonicPage()
 @Component({
@@ -85,7 +86,7 @@ export class CreateMeeting {
   }
 
   ionViewDidLoad() {
-    this.getUserPosition();
+
   }
 
   ionViewDidEnter(){
@@ -101,16 +102,15 @@ export class CreateMeeting {
     /*this.starttime = DateUtils.getCurrentDateTime();
     this.datePicker.setValue(this.starttime);
     */
+    this.getUserPosition();
   }
 
 
   onStartMeeting(){
-    let loader = this.loadingCtrl.create({
-      content: "",
-      duration: 5000,
-      dismissOnPageChange:true
-    });
-
+    if(isUndefined(this.currentPos) || isUndefined(this.currentPos.coords)) {
+      this.presentAlert('Error', "We were unable to get location. Please enable location setting.");
+      return
+    }
     this.subject = this.meetingDetailsForm.controls['meetingSubject'].value;
     this.customerName = this.meetingDetailsForm.controls['customerName'].value;
     this.contactPerson = this.meetingDetailsForm.controls['contactPerson'].value;
@@ -120,6 +120,11 @@ export class CreateMeeting {
       var datetimestr = this.meetingDetailsForm.controls['meetingStartTime'].value;
     */
     this.starttime = DateUtils.formatDateTime(new Date(Date.now()));
+    let loader = this.loadingCtrl.create({
+      content: "",
+      duration: 5000,
+      dismissOnPageChange:true
+    });
     loader.present();
 
     this.restProvider.createMeeting(
@@ -133,7 +138,6 @@ export class CreateMeeting {
       this.starttime
     ).then(
       res => {
-        loader.dismiss();
         if(res['result']['status'] == 'SUCCESS'){
           let meetingid = res['result']['meeting_id'] ;
           this.preferences.store('meetingtitle', this.subject);
@@ -167,11 +171,13 @@ export class CreateMeeting {
                 }
               },
               err => {
-                this.presentAlert('Error', "Some error has been occurred.");
+                loader.dismiss();
+                this.presentAlert('Error', "Error in server connection.");
               }
             )
         }else{
           // show alert if status is failed.
+          loader.dismiss();
           this.presentAlert('Error', "Some error has been occurred.");
         }
       },

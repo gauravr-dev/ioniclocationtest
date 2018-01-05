@@ -50,7 +50,6 @@ export class HomePage {
 
   ionViewDidLoad(){
     // this.loadMap();
-    this.getUserPosition();
   }
 
   ionViewDidEnter(){
@@ -63,13 +62,20 @@ export class HomePage {
     this.preferences.fetch('serverurl').then((res) => {
       this.serverurl = res;
     });
-
+    this.getUserPosition();
   }
 
   onSendLocation(){
-    if(this.currentPos){
+    if(this.currentPos && this.currentPos.coords ){
+      let loader = this.loadingCtrl.create({
+        content: "Fetching current location...",
+        duration: 5000,
+        dismissOnPageChange:true
+      });
+      loader.present();
       this.restProvider.sendLocation(this.serverurl,this.user, this.password, this.currentPos.coords.latitude, this.currentPos.coords.longitude)
       .then(res => {
+        loader.dismiss();
         if(res['result'] == false){
           this.presentAlert('Error', 'There is some error in request.');
         }else{
@@ -77,8 +83,11 @@ export class HomePage {
         }
       },
       err => {
+        loader.dismiss();
         this.presentAlert('Error', "Error in server connection.");
       });
+    }else{
+      this.presentAlert('Error', "We were unable to get location. Please enable location setting.");
     }
   }
 

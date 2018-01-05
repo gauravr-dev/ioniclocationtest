@@ -22,6 +22,7 @@ import { AppPreferences } from '@ionic-native/app-preferences' ;
 import { Geolocation ,GeolocationOptions ,Geoposition ,PositionError } from '@ionic-native/geolocation';
 
 import { EndMeetingPage } from '../end-meeting/end-meeting';
+import { isUndefined } from 'ionic-angular/util/util';
 
 @IonicPage()
 @Component({
@@ -147,6 +148,10 @@ export class ShowMeetingPage {
         var starttime = DateUtils.getCurrentDateTime();
         var description = data ;
 
+        if(isUndefined(this.currentPos) || isUndefined(this.currentPos.coords)) {
+          this.presentAlert('Error', "We were unable to get location. Please enable location setting.");
+          return
+        }
         let loader = this.loadingCtrl.create({
           content: "",
           duration: 5000,
@@ -195,7 +200,6 @@ export class ShowMeetingPage {
     this.options = {
       enableHighAccuracy : true
     };
-
     this.geolocation.getCurrentPosition(this.options).then((pos : Geoposition) => {
         this.currentPos = pos;
         let watch = this.geolocation.watchPosition();
