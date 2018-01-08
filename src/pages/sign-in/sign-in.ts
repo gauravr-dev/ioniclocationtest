@@ -30,23 +30,23 @@ export class SignInPage {
     private alertCtrl: AlertController,
     private preferences: AppPreferences
   ) {
-    // 47.74.157.145:8069
+    // http://47.74.157.145:8070
     // "http://191.101.239.214:8079",
     this.credentialsForm = this.formBuilder.group({
       serverurl:[
-        "http://47.74.157.145:8070",
+        "",
         Validators.compose([
           Validators.required
         ])
       ],
       user: [
-        "admin",
+        "",
         Validators.compose([
           Validators.required
         ])
       ],
       password: [
-        "admin",
+        "",
         Validators.compose([
           Validators.required
         ])

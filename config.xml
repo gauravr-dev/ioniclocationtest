@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget id="com.ebizon.rightspot" version="0.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+<widget id="com.geotechnosoft.bingocrm" version="0.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
     <name>BingoCRM</name>
     <description>An awesome Ionic/Cordova app.</description>
     <author email="gauravr.dev@gmail.com" href="http://ionicframework.com/">Gaurav Rajput</author>
@@ -86,8 +86,6 @@
     <allow-navigation href="http://192.168.43.27:8104" />
     <allow-navigation href="http://192.168.0.4:8100" />
     <allow-navigation href="http://192.168.0.7:8100" />
-    <allow-navigation href="http://192.168.100.52:8100" />
-    <allow-navigation href="http://192.168.0.6:8101" />
     <engine name="ios" spec="~4.5.4" />
     <engine name="android" spec="~6.3.0" />
     <plugin name="cordova-plugin-geolocation" spec="^3.0.0">
