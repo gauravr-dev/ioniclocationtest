@@ -41,9 +41,11 @@ export class CreateMeeting {
   submitted: boolean;
   options : GeolocationOptions;
   currentPos : Geoposition;
-  public maxDate: string;
+  //public maxDate: string;
 
-  @ViewChild('datePicker') datePicker: any;
+  watch: any;
+
+  //@ViewChild('datePicker') datePicker: any;
 
 
   constructor(
@@ -200,19 +202,22 @@ export class CreateMeeting {
 
   async getUserPosition(){
     await this.platform.ready();
-    this.options = {
-      enableHighAccuracy : true
-    };
-    this.geolocation.getCurrentPosition(this.options).then((pos : Geoposition) => {
+    // this.options = {
+    //   enableHighAccuracy : true
+    // };
+    this.geolocation.getCurrentPosition().then((pos : Geoposition) => {
         this.currentPos = pos;
-        let watch = this.geolocation.watchPosition();
-          watch.subscribe((pos) => {
-          this.currentPos = pos;
-        });
+        this.updateLocation();
     },(err : PositionError)=>{
+      this.updateLocation();
     })
   }
 
-
+  updateLocation(){
+    this.watch = this.geolocation.watchPosition();
+    this.watch.subscribe((pos) => {
+        this.currentPos = pos;
+    });
+  }
 
 }

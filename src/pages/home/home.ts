@@ -8,11 +8,6 @@ import { AppPreferences } from '@ionic-native/app-preferences' ;
 
 import {
   GoogleMaps,
-  GoogleMap,
-  GoogleMapsEvent,
-  GoogleMapOptions,
-  CameraPosition,
-  MarkerOptions,
   Marker
  } from '@ionic-native/google-maps';
 import { isUndefined } from 'ionic-angular/util/util';
@@ -31,6 +26,7 @@ export class HomePage {
   password:String;
   serverurl:String;
   locationMarker: Marker ;
+  watch: any ;
 
   @ViewChild('map') mapElement: ElementRef;
   map: any;
@@ -43,9 +39,8 @@ export class HomePage {
     public loadingCtrl: LoadingController,
     private alertCtrl: AlertController,
     private platform: Platform,
-    private preferences: AppPreferences,
-    private googleMaps: GoogleMaps
-  ) {
+    private preferences: AppPreferences
+    ) {
   }
 
   ionViewDidLoad(){
@@ -152,7 +147,6 @@ export class HomePage {
     };*/
     let loader = this.loadingCtrl.create({
       content: "Fetching current location...",
-      duration: 5000,
       dismissOnPageChange:true
     });
     loader.present();
@@ -172,8 +166,8 @@ export class HomePage {
    *
    */
   updateLocation(){
-    let watch = this.geolocation.watchPosition();
-    watch.subscribe((pos) => {
+    this.watch = this.geolocation.watchPosition();
+    this.watch.subscribe((pos) => {
         this.currentPos = pos;
     });
   }

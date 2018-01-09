@@ -16,7 +16,7 @@ import { IonicPage,
   Platform,
   ModalController
 } from "ionic-angular" ;
-import { FormBuilder, FormGroup, Validators } from "@angular/forms";
+import { FormBuilder, FormGroup } from "@angular/forms";
 import { RestProvider } from '../../providers/rest/rest';
 import { AppPreferences } from '@ionic-native/app-preferences' ;
 import { Geolocation ,GeolocationOptions ,Geoposition ,PositionError } from '@ionic-native/geolocation';
@@ -48,11 +48,11 @@ export class ShowMeetingPage {
   currentTime: string ;
   options : GeolocationOptions;
   currentPos : Geoposition;
+  watch: any;
 
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
-    private formBuilder: FormBuilder,
     private restProvider: RestProvider,
     public loadingCtrl: LoadingController,
     private alertCtrl: AlertController,
@@ -197,16 +197,22 @@ export class ShowMeetingPage {
 
   async getUserPosition(){
     await this.platform.ready();
-    this.options = {
-      enableHighAccuracy : true
-    };
-    this.geolocation.getCurrentPosition(this.options).then((pos : Geoposition) => {
+    // this.options = {
+    //   enableHighAccuracy : true
+    // };
+    let loader = this.loadingCtrl.create({
+      content: "Fetching current location...",
+      dismissOnPageChange:true
+    });
+    loader.present();
+    this.geolocation.getCurrentPosition().then((pos : Geoposition) => {
+        loader.dismiss();
         this.currentPos = pos;
-        let watch = this.geolocation.watchPosition();
-          watch.subscribe((pos) => {
-          this.currentPos = pos;
-        });
+        this.updateLocation();
     },(err : PositionError)=>{
+        loader.dismiss();
+        this.presentAlert('LocationError', err.message);
+        this.updateLocation();
     })
   }
 
@@ -218,4 +224,12 @@ export class ShowMeetingPage {
     });
     alert.present();
   }
+
+  updateLocation(){
+    this.watch = this.geolocation.watchPosition();
+    this.watch.subscribe((pos) => {
+        this.currentPos = pos;
+    });
+  }
+
 }
