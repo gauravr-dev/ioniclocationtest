@@ -1,32 +1,22 @@
 <ion-header no-border>
-  <!--
-  <ion-navbar transparent>
-    <button ion-button menuToggle>
-      <ion-icon name="menu"></ion-icon>
-    </button>
-  </ion-navbar>
-  -->
+  <ion-navbar transparent>Send Location</ion-navbar>
 </ion-header>
 
 <ion-content no-bounce>
   <ion-item style="margin-top: 80px;" no-lines>
       <h2 *ngIf="this.user">Welcome, {{this.user}}</h2>
-      <h3>Your current location is:</h3>
+      <!--h3>Your current location is:</h3>
       <h4>Latitude: </h4>
       <p *ngIf="this.currentPos">{{this.currentPos.coords.latitude}}</p>
       <h4>Longitude: </h4>
-      <p *ngIf="this.currentPos">{{this.currentPos.coords.longitude}}</p>
+      <p-- *ngIf="this.currentPos">{{this.currentPos.coords.longitude}}</p-->
   </ion-item>
   <ion-item style="margin-top: 50px;" no-lines>
     <button ion-button block style="height: 45px;background-color:rgb(38,38,38);"(click)="onSendLocation()">
       Send Location
     </button>
-    <button ion-button block style="height: 45px; background-color:rgb(242,110,1);"(click)="onCreateMeeting()">
-      Create Meeti
-    </button>
   </ion-item>
-
+  <ion-item style="margin-top: 5px; padding: 10px;" no-lines>
+    <button ion-button block style="background-color:firebrick;" (click)="onTapLogout()" >Logout</button>
+  </ion-item>
 </ion-content>
-<ion-footer style="padding: 10px;" no-lines>
-  <button ion-button block style="background-color:firebrick;" (click)="onTapLogout()" >Logout</button>
-</ion-footer>

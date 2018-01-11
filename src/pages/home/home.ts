@@ -4,6 +4,7 @@ import { NavController, LoadingController, AlertController, Platform  } from 'io
 import { Geolocation ,GeolocationOptions ,Geoposition ,PositionError } from '@ionic-native/geolocation';
 import { RestProvider } from '../../providers/rest/rest';
 import { AppPreferences } from '@ionic-native/app-preferences' ;
+import { isUndefined } from 'ionic-angular/util/util';
 
 @Component({
   selector: 'page-home',
@@ -16,6 +17,7 @@ export class HomePage {
   user:String;
   password:String;
   serverurl:String;
+  timer:any;
 
   constructor(
     public navCtrl: NavController,
@@ -33,6 +35,9 @@ export class HomePage {
     this.getUserPosition();
     this.preferences.fetch('username').then((res) => {
       this.user = res ;
+      if(!isUndefined(this.user) && this.user != ''){
+        this.autoSendLocation();
+      }
     });
     this.preferences.fetch('password').then((res) => {
       this.password = res;
@@ -58,9 +63,26 @@ export class HomePage {
     }
   }
 
-  onGetLocation(){
-    this.getUserPosition();
+  autoSendLocation(){
+    this.timer = setTimeout(this.silentSendLocation, 10000)
   }
+
+  silentSendLocation(){
+    if(this.currentPos){
+      this.restProvider.sendLocation(this.serverurl,this.user, this.password, this.currentPos.coords.latitude, this.currentPos.coords.longitude)
+      .then(res => {
+        if(res['result'] == false){
+          //this.presentAlert('Error', 'There is some error in request.');
+        }else{
+          //this.presentAlert('Success', 'You location has been sent successfully.');
+        }
+      },
+      err => {
+        //this.presentAlert('Error', err.message);
+      });
+    }
+  }
+
 
   presentAlert(title, message) {
     let alert = this.alertCtrl.create({
@@ -73,16 +95,14 @@ export class HomePage {
 
   async getUserPosition(){
     await this.platform.ready();
-    this.options = {
-      enableHighAccuracy : true
-    };
+    // this.options = {
+    //   enableHighAccuracy : true
     let loader = this.loadingCtrl.create({
       content: "Fetching current location...",
-      duration: 5000,
       dismissOnPageChange:true
     });
     loader.present();
-    this.geolocation.getCurrentPosition(this.options).then((pos : Geoposition) => {
+    this.geolocation.getCurrentPosition().then((pos : Geoposition) => {
         this.currentPos = pos;
         loader.dismiss();
         this.updateLocation();
@@ -100,9 +120,11 @@ export class HomePage {
   }
 
   onTapLogout(){
-    this.preferences.store('serverurl', '');
-    this.preferences.store('username', '');
-    this.preferences.store('password', '');
+    // this.preferences.store('serverurl', '');
+    // this.preferences.store('username', '');
+    // this.preferences.store('password', '');
+    this.preferences.clearAll();
+    clearInterval(this.timer);
     this.navCtrl.setRoot(SignInPage);
   }
 }
