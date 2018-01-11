@@ -18,6 +18,7 @@ export class HomePage {
   password:String;
   serverurl:String;
   timer:any;
+  time:number;
 
   constructor(
     public navCtrl: NavController,
@@ -33,6 +34,7 @@ export class HomePage {
 
   ionViewDidEnter(){
     this.getUserPosition();
+
     this.preferences.fetch('username').then((res) => {
       this.user = res ;
       if(!isUndefined(this.user) && this.user != ''){
@@ -64,21 +66,25 @@ export class HomePage {
   }
 
   autoSendLocation(){
-    this.timer = setTimeout(this.silentSendLocation, 10000)
+    // this.timer = setTimeout(this.silentSendLocation.bind(this), 1000)
+    this.timer = setInterval( () => {
+      this.silentSendLocation();
+    }, 1000*60*10);
   }
 
-  silentSendLocation(){
+  silentSendLocation() {
     if(this.currentPos){
-      this.restProvider.sendLocation(this.serverurl,this.user, this.password, this.currentPos.coords.latitude, this.currentPos.coords.longitude)
+      this.time = Date.now();
+      this.restProvider.sendLocation(this.serverurl, this.user, this.password, this.currentPos.coords.latitude, this.currentPos.coords.longitude)
       .then(res => {
         if(res['result'] == false){
-          //this.presentAlert('Error', 'There is some error in request.');
+          // this.presentAlert('Error', 'There is some error in request.');
         }else{
-          //this.presentAlert('Success', 'You location has been sent successfully.');
+          // this.presentAlert('Success', 'You location has been sent successfully.');
         }
       },
       err => {
-        //this.presentAlert('Error', err.message);
+        // this.presentAlert('Error', err.message);
       });
     }
   }
@@ -123,6 +129,7 @@ export class HomePage {
     // this.preferences.store('serverurl', '');
     // this.preferences.store('username', '');
     // this.preferences.store('password', '');
+
     this.preferences.clearAll();
     clearInterval(this.timer);
     this.navCtrl.setRoot(SignInPage);

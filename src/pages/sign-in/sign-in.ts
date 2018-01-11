@@ -32,7 +32,7 @@ export class SignInPage {
   ) {
     this.credentialsForm = this.formBuilder.group({
       serverurl:[
-        "http://47.74.157.145:8069",
+        "http://47.74.157.145:8070",
         Validators.compose([
           Validators.required
         ])
